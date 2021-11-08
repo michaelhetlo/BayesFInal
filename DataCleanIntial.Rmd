@@ -32,7 +32,13 @@ pbp$DefenseTeam <- as.factor(pbp$DefenseTeam)
 ```{r mutate}
 pbp <- pbp %>%
   mutate(GameDate = ymd(GameDate),
-         timeout = ifelse(grepl('TIMEOUT', Description) == TRUE, 1, 0))
+         timeout = ifelse(grepl('TIMEOUT', Description) == TRUE, 1, 0),
+         yardstoTD = 100 - YardLine,
+         garbage = 0, 
+         garbage = ifelse(grepl('END QUARTER', Description), 1, 
+                          ifelse(grepl('GAME HAS', Description), 1, 
+                                 ifelse(Description == 'TWO-MINUTE WARNING', 1, 
+                                        ifelse(Description == 'GAME', 1, garbage)))))
 ```
 
 ```{r select - due to all values same}
@@ -42,7 +48,8 @@ pbp <- pbp %>%
 
 ```{r filter, eval=FALSE}
 pbp <- pbp %>%
-  #filter(timeout == 1)
+  # filter(timeout == 1,
+  #        garbage == 0)
 ```
 
 ```{r deadball penalties}
@@ -62,6 +69,15 @@ pbp %>%
   summarise(most = max(Yards), least = min(Yards), avg = mean(Yards))
 ```
 
+```{r something weird with YardLine Variable}
+pbp %>%
+  mutate(my = ifelse(Yards > yardstoTD, 'more', 'less')) %>%
+  filter(my == 'more') %>%
+  select(Description, yardstoTD, Yards, YardLine, YardLineDirection, YardLineFixed)
+```
+
+There is something weird with the 50 yard line with the YardLine Variable
+
 ```{r one game sample, eval=FALSE}
 pbp %>%
   filter(GameId == '2021102409', OffenseTeam == 'TB') %>%
@@ -72,16 +88,8 @@ pbp %>%
 
 ```{r}
 pbp %>%
-  mutate(yardstoendzone = ifelse(YardLineDirection == 'OWN', YardLineFixed + 50, YardLineFixed)) %>%
-  group_by(yardstoendzone) %>%
-  summarise(n())
-```
-
-
-
-```{r}
-pbp %>%
-  group_by(YardLineFixed, YardLineDirection, YardLine) %>%
+  mutate(g50 = ifelse(YardLine > 50, 1, 0)) %>%
+  group_by(YardLineDirection, g50) %>%
   summarise(n())
 ```
 
@@ -93,7 +101,7 @@ pbp %>%
 
 ```{r}
 pbp %>%
-  group_by(IsMeasurement) %>%
+  group_by() %>%
   summarise(n())
 ```
 
@@ -103,6 +111,23 @@ names(pbp)
 
 YardlineFixed switches at half, so field is always left to right not dependent on who's endzone is who's.
 
+```{r}
+pbp %>%
+  filter(OffenseTeam == '') %>%
+  group_by(Description) %>%
+  summarise(n())
+```
+
+TWO-MINUTE WARNING
+END GAME		
+END QUARTER 1				
+END QUARTER 2				
+END QUARTER 3				
+END QUARTER 4				
+GAME			
+THE GAME HAS BEEN SUSPENDED. KICKOFF HAS BEEN DELAYED DUE TO WEATHER.			
+THE GAME HAS BEEN SUSPENDED. THE GAME HAS BEEN SUSPENDED DUE TO WEATHER.			
+THE GAME HAS RESUMED.
 
 
 
