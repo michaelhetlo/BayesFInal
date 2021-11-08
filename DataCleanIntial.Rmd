@@ -1,0 +1,108 @@
+---
+title: "Capstone Data Clean Initial"
+author: "Michael Helton"
+date: "11/8/2021"
+output: html_document
+---
+
+```{r}
+# Load packages
+library(bayesrules)
+library(tidyverse)
+library(rstanarm)
+library(broom.mixed)
+library(tidybayes)
+library(forcats)
+library(bayesplot)
+library(lubridate)
+```
+
+```{r read.csv}
+pbp <- read.csv('pbp-2021.csv')
+```
+
+```{r as.factor}
+pbp$GameId <- as.factor(pbp$GameId)
+pbp$Quarter <- as.factor(pbp$Quarter)
+pbp$Down <- as.factor(pbp$Down)
+pbp$OffenseTeam <- as.factor(pbp$OffenseTeam)
+pbp$DefenseTeam <- as.factor(pbp$DefenseTeam)
+```
+
+```{r mutate}
+pbp <- pbp %>%
+  mutate(GameDate = ymd(GameDate),
+         timeout = ifelse(grepl('TIMEOUT', Description) == TRUE, 1, 0))
+```
+
+```{r select - due to all values same}
+pbp <- pbp %>%
+  select(-c(X, X.1, X.2, X.3, Challenger, NextScore, TeamWin, IsMeasurement))
+```
+
+```{r filter, eval=FALSE}
+pbp <- pbp %>%
+  #filter(timeout == 1)
+```
+
+```{r deadball penalties}
+pbp %>%
+  filter(IsNoPlay == 1) %>%
+  group_by(IsPenalty, Yards) %>%
+  summarise(n())
+```
+
+```{r 2 penalty plays only one accepted}
+pbp %>%
+  filter(IsPenalty == 1, IsPenaltyAccepted == 0, IsNoPlay == 1) 
+```
+
+```{r}
+pbp %>%
+  summarise(most = max(Yards), least = min(Yards), avg = mean(Yards))
+```
+
+```{r one game sample, eval=FALSE}
+pbp %>%
+  filter(GameId == '2021102409', OffenseTeam == 'TB') %>%
+  arrange(Quarter) %>%
+  select(Quarter, YardLineDirection) %>%
+  view()
+```
+
+```{r}
+pbp %>%
+  mutate(yardstoendzone = ifelse(YardLineDirection == 'OWN', YardLineFixed + 50, YardLineFixed)) %>%
+  group_by(yardstoendzone) %>%
+  summarise(n())
+```
+
+
+
+```{r}
+pbp %>%
+  group_by(YardLineFixed, YardLineDirection, YardLine) %>%
+  summarise(n())
+```
+
+```{r}
+pbp %>%
+  group_by(IsTouchdown) %>%
+  summarise(n())
+```
+
+```{r}
+pbp %>%
+  group_by(IsMeasurement) %>%
+  summarise(n())
+```
+
+```{r}
+names(pbp)
+```
+
+YardlineFixed switches at half, so field is always left to right not dependent on who's endzone is who's.
+
+
+
+
