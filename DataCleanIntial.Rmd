@@ -48,7 +48,7 @@ pbp <- pbp %>%
 
 ```{r filter, eval=FALSE}
 pbp <- pbp %>%
-  # filter(timeout == 1,
+  # filter(timeout == 0,
   #        garbage == 0)
 ```
 
