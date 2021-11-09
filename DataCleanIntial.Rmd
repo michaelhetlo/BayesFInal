@@ -129,5 +129,73 @@ THE GAME HAS BEEN SUSPENDED. KICKOFF HAS BEEN DELAYED DUE TO WEATHER.
 THE GAME HAS BEEN SUSPENDED. THE GAME HAS BEEN SUSPENDED DUE TO WEATHER.			
 THE GAME HAS RESUMED.
 
+```{r}
+standings <- read_csv("http://www.habitatring.com/standings.csv")
+plays <- plays %>%
+  inner_join(standings,by=c("season"="season","posteam"="team"))
+```
+
+```{r}
+library(nflfastR)
+
+ids <- fast_scraper_schedules(2017:2019) %>%
+  filter(game_type == "SB") %>%
+  pull(game_id)
+pbp <- build_nflfastR_pbp(ids)
+```
+
+```{r}
+loadedpbp <- load_pbp(2018:2020, qs = TRUE)
+```
+
+
+```{r}
+names(loadedpbp)
+```
+
+```{r}
+sch2015 <- fast_scraper_schedules(2015)
+sch2016 <- fast_scraper_schedules(2016)
+sch2017 <- fast_scraper_schedules(2017)
+sch2018 <- fast_scraper_schedules(2018)
+sch2019 <- fast_scraper_schedules(2019)
+sch2020 <- fast_scraper_schedules(2020)
+```
+
+```{r}
+sch2015 %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0)) %>%
+  group_by(home_team) %>%
+  mutate(totalhomewins = sum(homewin)) %>%
+  ungroup() %>%
+  group_by(away_team) %>%
+  mutate(totalawaywin = sum(viswin))
+```
+
+```{r}
+sch2015 %>%
+  filter(away_team == 'BAL'|home_team == 'BAL') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0)) %>%
+  group_by(away_team) %>%
+  mutate(teamawaywins = sum(viswin)) %>%
+  ungroup() %>%
+  group_by(home_team) %>%
+  mutate(teamhomewins = sum(homewin)) %>%
+  ungroup() %>%
+  select(home_team, away_team, homewin, viswin, gmtie, teamawaywins, teamhomewins)
+```
+
+
+
+
+
+
+
+
+
 
 
