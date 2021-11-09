@@ -130,18 +130,18 @@ THE GAME HAS BEEN SUSPENDED. THE GAME HAS BEEN SUSPENDED DUE TO WEATHER.
 THE GAME HAS RESUMED.
 
 ```{r}
-standings <- read_csv("http://www.habitatring.com/standings.csv")
-plays <- plays %>%
-  inner_join(standings,by=c("season"="season","posteam"="team"))
+# standings <- read_csv("http://www.habitatring.com/standings.csv")
+# plays <- plays %>%
+#   inner_join(standings,by=c("season"="season","posteam"="team"))
 ```
 
 ```{r}
 library(nflfastR)
 
-ids <- fast_scraper_schedules(2017:2019) %>%
-  filter(game_type == "SB") %>%
-  pull(game_id)
-pbp <- build_nflfastR_pbp(ids)
+# ids <- fast_scraper_schedules(2017:2019) %>%
+#   filter(game_type == "SB") %>%
+#   pull(game_id)
+# pbp <- build_nflfastR_pbp(ids)
 ```
 
 ```{r}
@@ -189,13 +189,106 @@ sch2015 %>%
   select(home_team, away_team, homewin, viswin, gmtie, teamawaywins, teamhomewins)
 ```
 
+```{r 15 hometeam wins}
+sch2015 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0)) %>%
+  filter(homewin == 1) %>%
+  group_by(home_team) %>%
+  summarise(wins.at.home = sum(homewin))
+```
 
+```{r 15 away team wins}
+sch2015 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0)) %>%
+  filter(viswin == 1) %>%
+  group_by(away_team) %>%
+  summarise(wins.at.away = sum(viswin))
+```
 
+```{r 15 ties}
+sch2015 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0)) %>%
+  filter(gmtie == 1) %>%
+  group_by(home_team) %>%
+  summarise(tie = sum(gmtie))
 
+sch2015 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0)) %>%
+  filter(gmtie == 1) %>%
+  group_by(away_team) %>%
+  summarise(tie = sum(gmtie))
+```
 
+```{r homewins15 creation}
+homewins15 <- sch2015 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+```
 
+```{r viswins15 creation}
+viswins15 <- sch2015 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+```
 
+```{r ties15 creation}
+hometies15 <- sch2015 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
 
+visties15 <- sch2015 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+ties15 <- hometies15 %>%
+  rbind(visties15)
+```
+
+```{r teamstandings15 creation}
+teamstandings15 <- homewins15 %>%
+  left_join(viswins15) %>%
+  left_join(ties15) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins = wins.at.away + wins.at.home,
+         loss = 16 - (wins + tie)) %>%
+  select(team, wins, loss, tie)
+```
 
 
 
