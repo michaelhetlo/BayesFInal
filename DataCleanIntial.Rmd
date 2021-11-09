@@ -285,10 +285,327 @@ teamstandings15 <- homewins15 %>%
   left_join(viswins15) %>%
   left_join(ties15) %>%
   mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
          wins = wins.at.away + wins.at.home,
          loss = 16 - (wins + tie)) %>%
   select(team, wins, loss, tie)
 ```
+
+```{r homewins16 creation}
+homewins16 <- sch2016 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+```
+
+```{r viswins16 creation}
+viswins16 <- sch2016 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+```
+
+```{r ties16 creation}
+hometies16 <- sch2016 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+visties16 <- sch2016 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+ties16 <- hometies16 %>%
+  rbind(visties16)
+```
+
+```{r teamstandings16 creation}
+teamstandings16 <- homewins16 %>%
+  left_join(viswins16) %>%
+  left_join(ties16) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = 16 - (wins + tie)) %>%
+  select(team, wins, loss, tie)
+```
+
+
+```{r homewins17 creation}
+homewins17 <- sch2017 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+```
+
+```{r viswins17 creation}
+viswins17 <- sch2017 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+```
+
+```{r ties17 creation}
+hometies17 <- sch2017 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+visties17 <- sch2017 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+ties17 <- hometies17 %>%
+  rbind(visties17)
+```
+
+```{r teamstandings17 creation}
+CLE <- data.frame(team = 'CLE', wins = 0, loss = 16, tie = 0)
+
+teamstandings17 <- homewins17 %>%
+  left_join(viswins17) %>%
+  left_join(ties17) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = 16 - (wins + tie)) %>%
+  select(team, wins, loss, tie)
+
+teamstandings17 <- teamstandings17 %>%
+  rbind(CLE)
+```
+
+
+```{r homewins18 creation}
+homewins18 <- sch2018 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+```
+
+```{r viswins18 creation}
+viswins18 <- sch2018 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+```
+
+```{r ties18 creation}
+hometies18 <- sch2018 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+visties18 <- sch2018 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+ties18 <- hometies18 %>%
+  rbind(visties18)
+```
+
+```{r teamstandings18 creation}
+teamstandings18 <- homewins18 %>%
+  left_join(viswins18) %>%
+  left_join(ties18) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = 16 - (wins + tie)) %>%
+  select(team, wins, loss, tie)
+```
+
+```{r homewins19 creation}
+homewins19 <- sch2019 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+```
+
+```{r viswins19 creation}
+viswins19 <- sch2019 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+```
+
+```{r ties19 creation}
+hometies19 <- sch2019 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+visties19 <- sch2019 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+ties19 <- hometies19 %>%
+  rbind(visties19)
+```
+
+```{r teamstandings19 creation}
+teamstandings19 <- homewins19 %>%
+  left_join(viswins19) %>%
+  left_join(ties19) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = 16 - (wins + tie)) %>%
+  select(team, wins, loss, tie)
+```
+
+```{r homewins20 creation}
+homewins20 <- sch2020 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+```
+
+```{r viswins20 creation}
+viswins20 <- sch2020 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+```
+
+```{r ties20 creation}
+hometies20 <- sch2020 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+visties20 <- sch2020 %>%
+  filter(game_type == 'REG') %>%
+  mutate(homewin = ifelse(home_result > 0, 1, 0),
+         viswin = ifelse(home_result < 0, 1, 0),
+         gmtie = ifelse(home_result == 0, 1, 0),
+         team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+ties20 <- hometies20 %>%
+  rbind(visties20)
+```
+
+```{r teamstandings20 creation}
+teamstandings20 <- homewins20 %>%
+  left_join(viswins20) %>%
+  left_join(ties20) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = 16 - (wins + tie)) %>%
+  select(team, wins, loss, tie)
+```
+
+
+
 
 
 
