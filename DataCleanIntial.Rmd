@@ -17,118 +17,6 @@ library(bayesplot)
 library(lubridate)
 ```
 
-```{r read.csv}
-pbp <- read.csv('pbp-2021.csv')
-```
-
-```{r as.factor}
-pbp$GameId <- as.factor(pbp$GameId)
-pbp$Quarter <- as.factor(pbp$Quarter)
-pbp$Down <- as.factor(pbp$Down)
-pbp$OffenseTeam <- as.factor(pbp$OffenseTeam)
-pbp$DefenseTeam <- as.factor(pbp$DefenseTeam)
-```
-
-```{r mutate}
-pbp <- pbp %>%
-  mutate(GameDate = ymd(GameDate),
-         timeout = ifelse(grepl('TIMEOUT', Description) == TRUE, 1, 0),
-         yardstoTD = 100 - YardLine,
-         garbage = 0, 
-         garbage = ifelse(grepl('END QUARTER', Description), 1, 
-                          ifelse(grepl('GAME HAS', Description), 1, 
-                                 ifelse(Description == 'TWO-MINUTE WARNING', 1, 
-                                        ifelse(Description == 'GAME', 1, garbage)))))
-```
-
-```{r select - due to all values same}
-pbp <- pbp %>%
-  select(-c(X, X.1, X.2, X.3, Challenger, NextScore, TeamWin, IsMeasurement))
-```
-
-```{r filter, eval=FALSE}
-pbp <- pbp %>%
-  # filter(timeout == 0,
-  #        garbage == 0)
-```
-
-```{r deadball penalties}
-pbp %>%
-  filter(IsNoPlay == 1) %>%
-  group_by(IsPenalty, Yards) %>%
-  summarise(n())
-```
-
-```{r 2 penalty plays only one accepted}
-pbp %>%
-  filter(IsPenalty == 1, IsPenaltyAccepted == 0, IsNoPlay == 1) 
-```
-
-```{r}
-pbp %>%
-  summarise(most = max(Yards), least = min(Yards), avg = mean(Yards))
-```
-
-```{r something weird with YardLine Variable}
-pbp %>%
-  mutate(my = ifelse(Yards > yardstoTD, 'more', 'less')) %>%
-  filter(my == 'more') %>%
-  select(Description, yardstoTD, Yards, YardLine, YardLineDirection, YardLineFixed)
-```
-
-There is something weird with the 50 yard line with the YardLine Variable
-
-```{r one game sample, eval=FALSE}
-pbp %>%
-  filter(GameId == '2021102409', OffenseTeam == 'TB') %>%
-  arrange(Quarter) %>%
-  select(Quarter, YardLineDirection) %>%
-  view()
-```
-
-```{r}
-pbp %>%
-  mutate(g50 = ifelse(YardLine > 50, 1, 0)) %>%
-  group_by(YardLineDirection, g50) %>%
-  summarise(n())
-```
-
-```{r}
-pbp %>%
-  group_by(IsTouchdown) %>%
-  summarise(n())
-```
-
-```{r}
-pbp %>%
-  group_by() %>%
-  summarise(n())
-```
-
-```{r}
-names(pbp)
-```
-
-YardlineFixed switches at half, so field is always left to right not dependent on who's endzone is who's.
-
-```{r}
-pbp %>%
-  filter(OffenseTeam == '') %>%
-  group_by(Description) %>%
-  summarise(n())
-```
-
-TWO-MINUTE WARNING
-END GAME		
-END QUARTER 1				
-END QUARTER 2				
-END QUARTER 3				
-END QUARTER 4				
-GAME			
-THE GAME HAS BEEN SUSPENDED. KICKOFF HAS BEEN DELAYED DUE TO WEATHER.			
-THE GAME HAS BEEN SUSPENDED. THE GAME HAS BEEN SUSPENDED DUE TO WEATHER.			
-THE GAME HAS RESUMED.
-
 ```{r}
 # standings <- read_csv("http://www.habitatring.com/standings.csv")
 # plays <- plays %>%
@@ -604,6 +492,9 @@ teamstandings20 <- homewins20 %>%
   select(team, wins, loss, tie)
 ```
 
+```{r}
+
+```
 
 
 
