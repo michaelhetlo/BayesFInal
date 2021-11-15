@@ -547,7 +547,9 @@ y15.w1.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w1.gp <- y15.w1.hgp %>%
-  rbind(y15.w1.vgp)
+  rbind(y15.w1.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w1.standings <- teamlist %>%
   left_join(y15.w1.h.w) %>%
@@ -607,7 +609,9 @@ y15.w2.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w2.gp <- y15.w2.hgp %>%
-  rbind(y15.w2.vgp)
+  rbind(y15.w2.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w2.standings <- teamlist %>%
   left_join(y15.w2.h.w) %>%
@@ -667,7 +671,9 @@ y15.w3.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w3.gp <- y15.w3.hgp %>%
-  rbind(y15.w3.vgp)
+  rbind(y15.w3.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w3.standings <- teamlist %>%
   left_join(y15.w3.h.w) %>%
@@ -727,7 +733,9 @@ y15.w4.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w4.gp <- y15.w4.hgp %>%
-  rbind(y15.w4.vgp)
+  rbind(y15.w4.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w4.standings <- teamlist %>%
   left_join(y15.w4.h.w) %>%
@@ -787,7 +795,9 @@ y15.w5.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w5.gp <- y15.w5.hgp %>%
-  rbind(y15.w5.vgp)
+  rbind(y15.w5.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w5.standings <- teamlist %>%
   left_join(y15.w5.h.w) %>%
@@ -847,7 +857,9 @@ y15.w6.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w6.gp <- y15.w6.hgp %>%
-  rbind(y15.w6.vgp)
+  rbind(y15.w6.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 
 y15.w6.standings <- teamlist %>%
@@ -908,7 +920,9 @@ y15.w7.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w7.gp <- y15.w7.hgp %>%
-  rbind(y15.w7.vgp)
+  rbind(y15.w7.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w7.standings <- teamlist %>%
   left_join(y15.w7.h.w) %>%
@@ -968,7 +982,9 @@ y15.w8.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w8.gp <- y15.w8.hgp %>%
-  rbind(y15.w8.vgp)
+  rbind(y15.w8.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w8.standings <- teamlist %>%
   left_join(y15.w8.h.w) %>%
@@ -1028,7 +1044,9 @@ y15.w9.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w9.gp <- y15.w9.hgp %>%
-  rbind(y15.w9.vgp)
+  rbind(y15.w9.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w9.standings <- teamlist %>%
   left_join(y15.w9.h.w) %>%
@@ -1088,7 +1106,9 @@ y15.w10.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w10.gp <- y15.w10.hgp %>%
-  rbind(y15.w10.vgp)
+  rbind(y15.w10.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w10.standings <- teamlist %>%
   left_join(y15.w10.h.w) %>%
@@ -1148,7 +1168,9 @@ y15.w11.vgp <- sch2015 %>%
   summarise(gp = n())
 
 y15.w11.gp <- y15.w11.hgp %>%
-  rbind(y15.w11.vgp)
+  rbind(y15.w11.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
 
 y15.w11.standings <- teamlist %>%
   left_join(y15.w11.h.w) %>%
@@ -1163,3 +1185,374 @@ y15.w11.standings <- teamlist %>%
   select(team, wins, loss, tie, gp)
 ```
 
+```{r 2015 w12 standings}
+y15.w12.h.w <- sch2015 %>%
+  filter(week <= 12) %>%
+  mutate(team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+
+y15.w12.v.w <- sch2015 %>%
+  filter(week <= 12) %>%
+  mutate(team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+
+y15.w12.h.t <- sch2015 %>%
+  filter(week <= 12) %>%
+  mutate(team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w12.v.t <- sch2015 %>%
+  filter(week <= 12) %>%
+  mutate(team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w12.t <- y15.w12.h.t %>%
+  rbind(y15.w12.v.t)
+
+y15.w12.hgp <- sch2015 %>%
+  filter(week <= 12) %>%
+  mutate(team = home_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w12.vgp <- sch2015 %>%
+  filter(week <= 12) %>%
+  mutate(team = away_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w12.gp <- y15.w12.hgp %>%
+  rbind(y15.w12.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
+
+y15.w12.standings <- teamlist %>%
+  left_join(y15.w12.h.w) %>%
+  left_join(y15.w12.v.w) %>%
+  left_join(y15.w12.t) %>%
+  left_join(y15.w12.gp) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = gp - (wins + tie)) %>%
+  select(team, wins, loss, tie, gp)
+```
+
+```{r 2015 w13 standings}
+y15.w13.h.w <- sch2015 %>%
+  filter(week <= 13) %>%
+  mutate(team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+
+y15.w13.v.w <- sch2015 %>%
+  filter(week <= 13) %>%
+  mutate(team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+
+y15.w13.h.t <- sch2015 %>%
+  filter(week <= 13) %>%
+  mutate(team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w13.v.t <- sch2015 %>%
+  filter(week <= 13) %>%
+  mutate(team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w13.t <- y15.w13.h.t %>%
+  rbind(y15.w13.v.t)
+
+y15.w13.hgp <- sch2015 %>%
+  filter(week <= 13) %>%
+  mutate(team = home_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w13.vgp <- sch2015 %>%
+  filter(week <= 13) %>%
+  mutate(team = away_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w13.gp <- y15.w13.hgp %>%
+  rbind(y15.w13.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
+
+y15.w13.standings <- teamlist %>%
+  left_join(y15.w13.h.w) %>%
+  left_join(y15.w13.v.w) %>%
+  left_join(y15.w13.t) %>%
+  left_join(y15.w13.gp) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = gp - (wins + tie)) %>%
+  select(team, wins, loss, tie, gp)
+```
+
+```{r 2015 w14 standings}
+y15.w14.h.w <- sch2015 %>%
+  filter(week <= 14) %>%
+  mutate(team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+
+y15.w14.v.w <- sch2015 %>%
+  filter(week <= 14) %>%
+  mutate(team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+
+y15.w14.h.t <- sch2015 %>%
+  filter(week <= 14) %>%
+  mutate(team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w14.v.t <- sch2015 %>%
+  filter(week <= 14) %>%
+  mutate(team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w14.t <- y15.w14.h.t %>%
+  rbind(y15.w14.v.t)
+
+y15.w14.hgp <- sch2015 %>%
+  filter(week <= 14) %>%
+  mutate(team = home_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w14.vgp <- sch2015 %>%
+  filter(week <= 14) %>%
+  mutate(team = away_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w14.gp <- y15.w14.hgp %>%
+  rbind(y15.w14.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
+
+y15.w14.standings <- teamlist %>%
+  left_join(y15.w14.h.w) %>%
+  left_join(y15.w14.v.w) %>%
+  left_join(y15.w14.t) %>%
+  left_join(y15.w14.gp) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = gp - (wins + tie)) %>%
+  select(team, wins, loss, tie, gp)
+```
+
+```{r 2015 w15 standings}
+y15.w15.h.w <- sch2015 %>%
+  filter(week <= 15) %>%
+  mutate(team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+
+y15.w15.v.w <- sch2015 %>%
+  filter(week <= 15) %>%
+  mutate(team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+
+y15.w15.h.t <- sch2015 %>%
+  filter(week <= 15) %>%
+  mutate(team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w15.v.t <- sch2015 %>%
+  filter(week <= 15) %>%
+  mutate(team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w15.t <- y15.w15.h.t %>%
+  rbind(y15.w15.v.t)
+
+y15.w15.hgp <- sch2015 %>%
+  filter(week <= 15) %>%
+  mutate(team = home_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w15.vgp <- sch2015 %>%
+  filter(week <= 15) %>%
+  mutate(team = away_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w15.gp <- y15.w15.hgp %>%
+  rbind(y15.w15.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
+
+y15.w15.standings <- teamlist %>%
+  left_join(y15.w15.h.w) %>%
+  left_join(y15.w15.v.w) %>%
+  left_join(y15.w15.t) %>%
+  left_join(y15.w15.gp) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = gp - (wins + tie)) %>%
+  select(team, wins, loss, tie, gp)
+```
+
+```{r 2015 w16 standings}
+y15.w16.h.w <- sch2015 %>%
+  filter(week <= 16) %>%
+  mutate(team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+
+y15.w16.v.w <- sch2015 %>%
+  filter(week <= 16) %>%
+  mutate(team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+
+y15.w16.h.t <- sch2015 %>%
+  filter(week <= 16) %>%
+  mutate(team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w16.v.t <- sch2015 %>%
+  filter(week <= 16) %>%
+  mutate(team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w16.t <- y15.w16.h.t %>%
+  rbind(y15.w16.v.t)
+
+y15.w16.hgp <- sch2015 %>%
+  filter(week <= 16) %>%
+  mutate(team = home_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w16.vgp <- sch2015 %>%
+  filter(week <= 16) %>%
+  mutate(team = away_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w16.gp <- y15.w16.hgp %>%
+  rbind(y15.w16.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
+
+y15.w16.standings <- teamlist %>%
+  left_join(y15.w16.h.w) %>%
+  left_join(y15.w16.v.w) %>%
+  left_join(y15.w16.t) %>%
+  left_join(y15.w16.gp) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = gp - (wins + tie)) %>%
+  select(team, wins, loss, tie, gp)
+```
+
+```{r 2015 w17 standings}
+y15.w17.h.w <- sch2015 %>%
+  filter(week <= 17) %>%
+  mutate(team = home_team) %>%
+  filter(homewin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.home = sum(homewin))
+
+y15.w17.v.w <- sch2015 %>%
+  filter(week <= 17) %>%
+  mutate(team = away_team) %>%
+  filter(viswin == 1) %>%
+  group_by(team) %>%
+  summarise(wins.at.away = sum(viswin))
+
+y15.w17.h.t <- sch2015 %>%
+  filter(week <= 17) %>%
+  mutate(team = home_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w17.v.t <- sch2015 %>%
+  filter(week <= 17) %>%
+  mutate(team = away_team) %>%
+  filter(gmtie == 1) %>%
+  group_by(team) %>%
+  summarise(tie = sum(gmtie))
+
+y15.w17.t <- y15.w17.h.t %>%
+  rbind(y15.w17.v.t)
+
+y15.w17.hgp <- sch2015 %>%
+  filter(week <= 17) %>%
+  mutate(team = home_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w17.vgp <- sch2015 %>%
+  filter(week <= 17) %>%
+  mutate(team = away_team) %>%
+  group_by(team) %>%
+  summarise(gp = n())
+
+y15.w17.gp <- y15.w17.hgp %>%
+  rbind(y15.w17.vgp) %>%
+  group_by(team) %>%
+  summarise(gp = sum(gp))
+
+y15.w17.standings <- teamlist %>%
+  left_join(y15.w17.h.w) %>%
+  left_join(y15.w17.v.w) %>%
+  left_join(y15.w17.t) %>%
+  left_join(y15.w17.gp) %>%
+  mutate(tie = ifelse(is.na(tie) == TRUE, 0, tie),
+         wins.at.home = ifelse(is.na(wins.at.home) == TRUE, 0, wins.at.home),
+         wins.at.away = ifelse(is.na(wins.at.away) == TRUE, 0, wins.at.away),
+         wins = wins.at.away + wins.at.home,
+         loss = gp - (wins + tie)) %>%
+  select(team, wins, loss, tie, gp)
+```
