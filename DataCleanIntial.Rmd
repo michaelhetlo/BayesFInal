@@ -36,11 +36,6 @@ library(nflfastR)
 loadedpbp <- load_pbp(2018:2020, qs = TRUE)
 ```
 
-
-```{r}
-names(loadedpbp)
-```
-
 ```{r}
 sch2015 <- fast_scraper_schedules(2015)
 sch2016 <- fast_scraper_schedules(2016)
@@ -65,14 +60,14 @@ sch2015$home_team[sch2015$home_team == 'STL'] <- 'LA'
 ```{r modify team name for Raiders}
 sch2015$away_team[sch2015$away_team == 'OAK'] <- 'LV'
 sch2015$home_team[sch2015$home_team == 'OAK'] <- 'LV'
-sch2016$away_team[sch2015$away_team == 'OAK'] <- 'LV'
-sch2016$home_team[sch2015$home_team == 'OAK'] <- 'LV'
-sch2017$away_team[sch2015$away_team == 'OAK'] <- 'LV'
-sch2017$home_team[sch2015$home_team == 'OAK'] <- 'LV'
-sch2018$away_team[sch2015$away_team == 'OAK'] <- 'LV'
-sch2018$home_team[sch2015$home_team == 'OAK'] <- 'LV'
-sch2019$away_team[sch2015$away_team == 'OAK'] <- 'LV'
-sch2019$home_team[sch2015$home_team == 'OAK'] <- 'LV'
+sch2016$away_team[sch2016$away_team == 'OAK'] <- 'LV'
+sch2016$home_team[sch2016$home_team == 'OAK'] <- 'LV'
+sch2017$away_team[sch2017$away_team == 'OAK'] <- 'LV'
+sch2017$home_team[sch2017$home_team == 'OAK'] <- 'LV'
+sch2018$away_team[sch2018$away_team == 'OAK'] <- 'LV'
+sch2018$home_team[sch2018$home_team == 'OAK'] <- 'LV'
+sch2019$away_team[sch2019$away_team == 'OAK'] <- 'LV'
+sch2019$home_team[sch2019$home_team == 'OAK'] <- 'LV'
 ```
 
 ```{r 15 hometeam wins}
