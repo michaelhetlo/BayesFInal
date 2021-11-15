@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+author: "Jacob Bulling"
+date: "11/15/2021"
+output: html_document
+---
+
+
+```{r}
+library(bayesrules)
+library(tidyverse)
+library(rstanarm)
+library(broom.mixed)
+library(tidybayes)
+library(forcats)
+library(bayesplot)
+library(lubridate)
+library(nflfastR)
+library(nflreadr)
+```
+
+
+
+```{r}
+play_by_play <- load_pbp(2015:2020, qs =TRUE)
+
+play_by_play_2 <- play_by_play %>%
+  filter(!is.na(yards_gained), home_team == posteam) %>%
+  group_by(game_id, home_team) %>%
+  mutate(year = year(game_date))%>%
+  select(year, game_id, home_team, yards_gained)%>%
+  summarize(total_yds = sum(yards_gained))
+  
+play_by_play_2 %>%
+  group_by(home_team, ) %>%
+  summarize(yds_per_gm = mean(total_yds))
+
+```
+
+To start let us explore some basic 
+
+```{r}
+play_by_play %>%
+  ggplot() + 
+  aes(x = )
+```
+
