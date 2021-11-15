@@ -75,33 +75,6 @@ sch2019$away_team[sch2015$away_team == 'OAK'] <- 'LV'
 sch2019$home_team[sch2015$home_team == 'OAK'] <- 'LV'
 ```
 
-```{r}
-sch2015 %>%
-  mutate(homewin = ifelse(home_result > 0, 1, 0),
-         viswin = ifelse(home_result < 0, 1, 0),
-         gmtie = ifelse(home_result == 0, 1, 0)) %>%
-  group_by(home_team) %>%
-  mutate(totalhomewins = sum(homewin)) %>%
-  ungroup() %>%
-  group_by(away_team) %>%
-  mutate(totalawaywin = sum(viswin))
-```
-
-```{r}
-sch2015 %>%
-  filter(away_team == 'BAL'|home_team == 'BAL') %>%
-  mutate(homewin = ifelse(home_result > 0, 1, 0),
-         viswin = ifelse(home_result < 0, 1, 0),
-         gmtie = ifelse(home_result == 0, 1, 0)) %>%
-  group_by(away_team) %>%
-  mutate(teamawaywins = sum(viswin)) %>%
-  ungroup() %>%
-  group_by(home_team) %>%
-  mutate(teamhomewins = sum(homewin)) %>%
-  ungroup() %>%
-  select(home_team, away_team, homewin, viswin, gmtie, teamawaywins, teamhomewins)
-```
-
 ```{r 15 hometeam wins}
 sch2015 %>%
   filter(game_type == 'REG') %>%
