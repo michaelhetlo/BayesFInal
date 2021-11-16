@@ -35,6 +35,11 @@ play_by_play_2 %>%
   group_by(home_team, ) %>%
   summarize(yds_per_gm = mean(total_yds))
 
+stat_2018 <- read_csv("2018.total.stats.csv")
+
+
+pbp_2020 <- nflfastR::load_pbp(2020)
+
 ```
 
 To start let us explore some basic 
