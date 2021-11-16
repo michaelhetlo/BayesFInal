@@ -5987,3 +5987,164 @@ y2018.w17.O.stats <- loadedpbp %>%
   group_by(team) %>%
   summarise(total.yards = sum(yards_gained, na.rm = TRUE), pass.yards = sum(passing_yards, na.rm = TRUE), rushing_yards = sum(rushing_yards, na.rm = TRUE), ints.thrown = sum(interception, na.rm = TRUE), fumble.lost = sum(fumble_lost, na.rm = TRUE), turnovers = ints.thrown + fumble.lost)
 ```
+
+```{r 2018 week 1 D stats}
+y2018.w1.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 1) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 2 D stats}
+y2018.w2.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 2) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 3 D stats}
+y2018.w3.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 3) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 4 D stats}
+y2018.w4.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 4) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 5 D stats}
+y2018.w5.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 5) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 6 D stats}
+y2018.w6.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 6) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 7 D stats}
+y2018.w7.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 7) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 8 D stats}
+y2018.w8.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 8) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 9 D stats}
+y2018.w9.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 9) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 10 D stats}
+y2018.w10.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 10) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 11 D stats}
+y2018.w11.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 11) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 12 D stats}
+y2018.w12.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 12) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 13 D stats}
+y2018.w13.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 13) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 14 D stats}
+y2018.w14.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 14) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 15 D stats}
+y2018.w15.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 15) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 16 D stats}
+y2018.w16.D.stats <- loadedpbp %>%
+  filter(season == 2018, 
+         week <= 16) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r 2018 week 17 D stats}
+y2018.w17.D.stats <- loadedpbp %>%
+  filter(season == 2018,
+         week <= 17) %>%
+  mutate(team = defteam) %>%
+  group_by(team) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
+
+```{r sample complete week}
+# y2018.w17.O.D.PLUS.stats
+y18.w17.standings %>%
+  right_join(y2018.w17.O.stats) %>%
+  right_join(y2018.w17.D.stats) %>%
+  mutate(ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
