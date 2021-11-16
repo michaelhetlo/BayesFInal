@@ -5800,5 +5800,39 @@ y19.w17.standings <- teamlist %>%
   select(team, wins, loss, tie, gp)
 ```
 
+```{r}
+names(loadedpbp)
+```
+
+```{r}
+loadedpbp %>%
+  filter(season == 2018, 
+         season_type == 'REG') %>%
+  mutate(offteam = ifelse(defteam == home_team, away_team, home_team)) %>%
+  group_by(offteam) %>%
+  summarise(total = sum(passing_yards, na.rm = TRUE)) %>%
+  arrange(desc(total))
+```
+
+```{r}
+loadedpbp <- loadedpbp %>%
+  mutate(offteam = ifelse(defteam == home_team, away_team, home_team))
+```
+
+```{r offense stats}
+loadedpbp %>%
+  filter(season == 2018, 
+         week <= 17) %>%
+  group_by(offteam) %>%
+  summarise(total.yards = sum(yards_gained, na.rm = TRUE), pass.yards = sum(passing_yards, na.rm = TRUE), rushing_yards = sum(rushing_yards, na.rm = TRUE), ints.thrown = sum(interception, na.rm = TRUE), fumble.lost = sum(fumble_lost, na.rm = TRUE), turnovers = ints + fumble.lost)
+```
+
+```{r defense stats}
+loadedpbp %>%
+  filter(season == 2018, 
+         week <= 17) %>%
+  group_by(defteam) %>%
+  summarise(total.yards.against = sum(yards_gained, na.rm = TRUE), pass.yards.against = sum(passing_yards, na.rm = TRUE), rushing_yards.against = sum(rushing_yards, na.rm = TRUE), ints.forced = sum(interception, na.rm = TRUE), fumble.gained = sum(fumble_lost, na.rm = TRUE), turnovers.forced = ints.forced + fumble.gained)
+```
 
 
