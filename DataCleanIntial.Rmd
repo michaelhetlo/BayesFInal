@@ -5,7 +5,7 @@ date: "11/8/2021"
 output: html_document
 ---
 
-```{r}
+```{r libraries}
 # Load packages
 library(bayesrules)
 library(tidyverse)
@@ -15,28 +15,21 @@ library(tidybayes)
 library(forcats)
 library(bayesplot)
 library(lubridate)
-```
-
-```{r}
-# standings <- read_csv("http://www.habitatring.com/standings.csv")
-# plays <- plays %>%
-#   inner_join(standings,by=c("season"="season","posteam"="team"))
-```
-
-```{r}
 library(nflfastR)
+```
 
+```{r ?}
 # ids <- fast_scraper_schedules(2017:2019) %>%
 #   filter(game_type == "SB") %>%
 #   pull(game_id)
 # pbp <- build_nflfastR_pbp(ids)
 ```
 
-```{r}
+```{r loadedpbp creation}
 loadedpbp <- load_pbp(2018:2020, qs = TRUE)
 ```
 
-```{r}
+```{r sch2015-2020 creation}
 sch2015 <- fast_scraper_schedules(2015)
 sch2016 <- fast_scraper_schedules(2016)
 sch2017 <- fast_scraper_schedules(2017)
@@ -485,7 +478,7 @@ teamstandings20 <- homewins20 %>%
   select(team, wins, loss, tie)
 ```
 
-```{r}
+```{r teamlist creation}
 teamlist <- teamstandings15 %>%
   select(team)
 ```
@@ -1550,7 +1543,6 @@ y15.w17.standings <- teamlist %>%
   select(team, wins, loss, tie, gp)
 ```
 
-
 ```{r 2016 w1 standings}
 sch2016 <- sch2016 %>%
     mutate(homewin = ifelse(home_result > 0, 1, 0),
@@ -2610,9 +2602,6 @@ y16.w17.standings <- teamlist %>%
          loss = gp - (wins + tie)) %>%
   select(team, wins, loss, tie, gp)
 ```
-
-
-
 
 ```{r 2017 w1 standings}
 sch2017 <- sch2017 %>%
@@ -3674,9 +3663,6 @@ y17.w17.standings <- teamlist %>%
   select(team, wins, loss, tie, gp)
 ```
 
-
-
-
 ```{r 2018 w1 standings}
 sch2018 <- sch2018 %>%
     mutate(homewin = ifelse(home_result > 0, 1, 0),
@@ -4736,9 +4722,6 @@ y18.w17.standings <- teamlist %>%
          loss = gp - (wins + tie)) %>%
   select(team, wins, loss, tie, gp)
 ```
-
-
-
 
 ```{r 2019 w1 standings}
 sch2019 <- sch2019 %>%
@@ -5800,21 +5783,11 @@ y19.w17.standings <- teamlist %>%
   select(team, wins, loss, tie, gp)
 ```
 
-```{r}
+```{r names loadedpbp}
 names(loadedpbp)
 ```
 
-```{r}
-loadedpbp %>%
-  filter(season == 2018, 
-         season_type == 'REG') %>%
-  mutate(offteam = ifelse(defteam == home_team, away_team, home_team)) %>%
-  group_by(offteam) %>%
-  summarise(total = sum(passing_yards, na.rm = TRUE)) %>%
-  arrange(desc(total))
-```
-
-```{r}
+```{r loadedpbp add offteam}
 loadedpbp <- loadedpbp %>%
   mutate(offteam = ifelse(defteam == home_team, away_team, home_team))
 ```
