@@ -6121,3 +6121,130 @@ y18.w17.standings %>%
   right_join(y2018.w17.D.stats) %>%
   mutate(ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
 ```
+
+```{r 2018 week 1 PLUS}
+y18.w1.PLUS <- y18.w1.standings %>%
+  right_join(y2018.w1.O.stats) %>%
+  right_join(y2018.w1.D.stats) %>%
+  mutate(week = 1, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 2 PLUS}
+y18.w2.PLUS <- y18.w2.standings %>%
+  right_join(y2018.w2.O.stats) %>%
+  right_join(y2018.w2.D.stats) %>%
+  mutate(week = 2, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 3 PLUS}
+y18.w3.PLUS <- y18.w3.standings %>%
+  right_join(y2018.w3.O.stats) %>%
+  right_join(y2018.w3.D.stats) %>%
+  mutate(week = 3, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 4 PLUS}
+y18.w4.PLUS <- y18.w4.standings %>%
+  right_join(y2018.w4.O.stats) %>%
+  right_join(y2018.w4.D.stats) %>%
+  mutate(week = 4, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 5 PLUS}
+y18.w5.PLUS <- y18.w5.standings %>%
+  right_join(y2018.w5.O.stats) %>%
+  right_join(y2018.w5.D.stats) %>%
+  mutate(week = 5, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 6 PLUS}
+y18.w6.PLUS <- y18.w6.standings %>%
+  right_join(y2018.w6.O.stats) %>%
+  right_join(y2018.w6.D.stats) %>%
+  mutate(week = 6, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 7 PLUS}
+y18.w7.PLUS <- y18.w7.standings %>%
+  right_join(y2018.w7.O.stats) %>%
+  right_join(y2018.w7.D.stats) %>%
+  mutate(week = 7, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 8 PLUS}
+y18.w8.PLUS <- y18.w8.standings %>%
+  right_join(y2018.w8.O.stats) %>%
+  right_join(y2018.w8.D.stats) %>%
+  mutate(week = 8, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 9 PLUS}
+y18.w9.PLUS <- y18.w9.standings %>%
+  right_join(y2018.w9.O.stats) %>%
+  right_join(y2018.w9.D.stats) %>%
+  mutate(week = 9, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 10 PLUS}
+y18.w10.PLUS <- y18.w10.standings %>%
+  right_join(y2018.w10.O.stats) %>%
+  right_join(y2018.w10.D.stats) %>%
+  mutate(week = 10, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 11 PLUS}
+y18.w11.PLUS <- y18.w11.standings %>%
+  right_join(y2018.w11.O.stats) %>%
+  right_join(y2018.w11.D.stats) %>%
+  mutate(week = 11, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 12 PLUS}
+y18.w12.PLUS <- y18.w12.standings %>%
+  right_join(y2018.w12.O.stats) %>%
+  right_join(y2018.w12.D.stats) %>%
+  mutate(week = 12, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 13 PLUS}
+y18.w13.PLUS <- y18.w13.standings %>%
+  right_join(y2018.w13.O.stats) %>%
+  right_join(y2018.w13.D.stats) %>%
+  mutate(week = 13, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 14 PLUS}
+y18.w14.PLUS <- y18.w14.standings %>%
+  right_join(y2018.w14.O.stats) %>%
+  right_join(y2018.w14.D.stats) %>%
+  mutate(week = 14, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 15 PLUS}
+y18.w15.PLUS <- y18.w15.standings %>%
+  right_join(y2018.w15.O.stats) %>%
+  right_join(y2018.w15.D.stats) %>%
+  mutate(week = 15, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 16 PLUS}
+y18.w16.PLUS <- y18.w16.standings %>%
+  right_join(y2018.w16.O.stats) %>%
+  right_join(y2018.w16.D.stats) %>%
+  mutate(week = 16, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 week 17 PLUS}
+y18.w17.PLUS <- y18.w17.standings %>%
+  right_join(y2018.w17.O.stats) %>%
+  right_join(y2018.w17.D.stats) %>%
+  mutate(week = 17, ty.pg = total.yards/gp, py.pg = pass.yards/gp, ry.pg = rushing_yards/gp, it.pg = ints.thrown/gp, fl.pg = fumble.lost/gp, to.pg = turnovers/gp, tya.pg = total.yards.against/gp, pya.pg = pass.yards.against/gp, rya = rushing_yards.against/gp, intf.pg = ints.forced/gp, ffg.pg = fumble.gained/gp, tof.pg = turnovers.forced/gp)
+```
+
+```{r 2018 total PLUS}
+y18.total.plus <- y18.w1.PLUS %>%
+  rbind(y18.w2.PLUS, y18.w3.PLUS, y18.w4.PLUS, y18.w5.PLUS, y18.w6.PLUS, y18.w7.PLUS, y18.w8.PLUS, y18.w9.PLUS, y18.w10.PLUS, y18.w11.PLUS, y18.w12.PLUS, y18.w13.PLUS, y18.w14.PLUS, y18.w15.PLUS, y18.w16.PLUS, y18.w17.PLUS) %>%
+  filter(is.na(team) == FALSE)
+```
+
+
