@@ -6247,5 +6247,67 @@ y18.total.plus <- y18.w1.PLUS %>%
   filter(is.na(team) == FALSE)
 ```
 
+```{r}
+a <- sch2018 %>%
+  select(home_team, away_team, week) %>%
+  mutate(team = home_team, 
+         opp.team = away_team) %>%
+  select(team, opp.team, week) %>%
+  left_join(y18.total.plus)
+
+y18.total.plus %>%
+  mutate(opp.team = team) %>%
+  select(-team) %>%
+  mutate_al
+  left_join(a)
+```
+
+```{r}
+week0 <- teamlist %>%
+  mutate(week = 0)
+
+b <- y18.total.plus %>%
+  right_join(week0) %>%
+  mutate_all(~replace(., is.na(.), 0))
+
+c <- b %>%
+  rbind(y18.total.plus) %>%
+  select(team, week, wins, loss, tie)
+```
+
+```{r}
+d <- sch2018 %>%
+  select(home_team, away_team, week) %>%
+  mutate(team = home_team, 
+         opp.team = away_team) %>%
+  select(team, opp.team, week) %>%
+  mutate(week = week - 1)
+
+e <- sch2018 %>%
+  select(home_team, away_team, week) %>%
+  mutate(team = away_team, 
+         opp.team = home_team) %>%
+  select(team, opp.team, week) %>%
+  mutate(week = week - 1)
+```
+
+```{r}
+f <- c %>%
+  left_join(d, by = c('team', 'week')) %>%
+  left_join(e, by = c('team', 'week')) %>%
+  mutate(opp.team = ifelse(is.na(opp.team.x) == FALSE, opp.team.x, opp.team.y)) %>%
+  select(-opp.team.x, -opp.team.y)
+```
+
+```{r}
+g <- c %>%
+  mutate(opp.team = team) %>%
+  select(-team)
+```
+
+```{r}
+f %>%
+  right_join(g, by = c('opp.team', 'week'))
+```
 
 
