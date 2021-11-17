@@ -1,0 +1,36 @@
+---
+title: "Helton Modeling"
+author: "Michael Helton"
+date: "11/16/2021"
+output: html_document
+---
+
+```{r libraries}
+# Load packages
+library(bayesrules)
+library(tidyverse)
+library(rstanarm)
+library(broom.mixed)
+library(tidybayes)
+library(forcats)
+library(bayesplot)
+library(lubridate)
+library(nflfastR)
+```
+
+```{r}
+test <- read.csv('first.model.csv')
+```
+
+
+```{r}
+first_model <- stan_glmer(
+  win ~ wins.x + loss.x + wins.y + loss.y + (1 | week) + (1 | team) + (1 | opp.team),
+  data = test,
+  family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+```{r}
+classification_summary(first_model, data = test)
+```

@@ -6306,8 +6306,47 @@ g <- c %>%
 ```
 
 ```{r}
-f %>%
+h<- f %>%
   right_join(g, by = c('opp.team', 'week'))
 ```
 
+```{r}
+aa <- sch2018 %>%
+  select(week, home_team, homewin) %>%
+  filter(homewin == 1) %>%
+  mutate(win = 1, week = week - 1, team = home_team) %>%
+  select(-homewin, -home_team)
+
+bb <- sch2018 %>%
+  select(week, away_team, viswin) %>%
+  filter(viswin == 1) %>%
+  mutate(win = 1, week = week - 1, team = away_team) %>%
+  select(-viswin, -away_team)
+
+cc <- aa %>%
+  rbind(bb)
+```
+
+```{r}
+test <- h %>%
+  left_join(cc) %>%
+  mutate(win = ifelse(is.na(win) == TRUE, 0, win)) %>%
+  filter(is.na(team) == FALSE)
+```
+
+```{r}
+first_model <- stan_glmer(
+  win ~ wins.x + loss.x + wins.y + loss.y + (1 | week) + (1 | team) + (1 | opp.team),
+  data = test,
+  family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+```{r}
+classification_summary(first_model, data = test)
+```
+
+```{r}
+write.csv(test, 'first.model.csv')
+```
 
