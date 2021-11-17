@@ -6349,7 +6349,7 @@ data_new <- load_pbp(2020)
 ```{r}
 halftime_score_diff_2020 <- data_new %>%
   filter(half_seconds_remaining == 0 & game_half == "Half1" & season_type == "REG")%>%
-  mutate(score_differential_half = total_home_score- total_away_score)%>%
+  mutate(score_differential = total_home_score - total_away_score)%>%
   select(game_id, home_team, away_team, game_half, score_differential)
 ```
 
@@ -6382,6 +6382,51 @@ pp_check(week_1)
 ```
 
 ```{r}
+set.seed(84735)
 classification_summary(week_1, data = score_diff_data)
+```
+
+## Part 4
+
+Below we have the the amount of wins for each team in the 2020 season, using this prior knowledgue of team quality will help to inform us of future game win probability. 
+
+```{r}
+teamstandings20 <- teamstandings20 %>%
+  left_join(teams_colors_logos, by = c("team" = "team_abbr"))
+  
+
+ggplot(teamstandings20) + 
+  aes(x = team, y = wins) + 
+  geom_col(fill = teamstandings20$team_color.x) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+```{r}
+score_diff_data %>%
+  ggplot() + 
+  aes(x = score_differential.y) + 
+  geom_histogram(binwidth = 7)
+```
+
+This graph above shows us that there is quite a lot of parity in the league making every score in our model matter a lot. 
+
+
+```{r}
+data_new %>%
+  filter(game_id == "2020_01_ARI_SF") %>%
+  ggplot() + 
+  aes(x = game_seconds_remaining, y = total_home_epa ) + 
+  geom_line()
+```
+
+
+
+```{r}
+data_new %>%
+  filter(game_id == "2020_01_ARI_SF") %>%
+  ggplot() + 
+  aes(x = game_seconds_remaining, y = home_wp) + 
+  geom_line()
 ```
 
