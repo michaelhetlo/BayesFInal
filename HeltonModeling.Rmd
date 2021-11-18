@@ -34,3 +34,41 @@ first_model <- stan_glmer(
 ```{r}
 classification_summary(first_model, data = test)
 ```
+
+```{r}
+second_model <- stan_glmer(
+  win ~ wins.x + loss.x + wins.y + loss.y + week + (1 | team) + (1 | opp.team),
+  data = test,
+  family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+```{r}
+classification_summary(second_model, data = test)
+```
+
+```{r}
+third_model <- stan_glmer(
+  win ~ wins.x + loss.x + wins.y + loss.y + week + (1 | team),
+  data = test,
+  family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+```{r}
+classification_summary(third_model, data = test)
+```
+
+```{r}
+fourth_model <- stan_glm(
+  win ~ wins.x + loss.x + wins.y + loss.y + team + opp.team,
+  data = test,
+  family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+```{r}
+classification_summary(fourth_model, data = test)
+```
+
+
