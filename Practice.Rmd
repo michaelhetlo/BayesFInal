@@ -201,6 +201,34 @@ end_score_diff_2020 <- data_new %>%
 
 score_diff_data <- halftime_score_diff_2020 %>%
   inner_join(end_score_diff_2020, by = "game_id")
+
+first_q_diff <- data_new %>%
+  filter(quarter_end == 1 & qtr == 1 & season_type == "REG") %>%
+  mutate(score_differential_1 = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential)
+
+second_q_diff <- data_new %>%
+  filter(quarter_end == 1 & qtr == 2 & season_type == "REG") %>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential) 
+
+third_q_diff <- data_new %>%
+  filter(quarter_end == 1 & qtr == 3 & season_type == "REG") %>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential)
+
+fourth_q_diff <- data_new %>%
+  filter(quarter_end == 1 & qtr == 4 & season_type == "REG") %>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential) %>%
+  mutate(home_team_win = if_else(score_differential > 0, 1, 0))
+
+quarter_score_diff <- first_q_diff %>%
+  inner_join(second_q_diff, by = "game_id") %>%
+   inner_join(third_q_diff, by = "game_id") %>%
+   inner_join(end_score_diff_2020, by = "game_id") 
+
+
 ```
 
 ```{r}
@@ -262,7 +290,7 @@ week_1 <- stan_glm(
 week_1
 ```
 
-
+The centered intercept tells us about the log odds of the winning probability. 
 
 ```{r}
 
@@ -273,3 +301,24 @@ pp_check(week_1)
 ## Part 5
 
 Our next steps are to finish creating our prior analysis on how good each team is and then we will complicate our model more and we may try to create a shiny app to make our model more interactive so that people can enter certain teams and game situations to predict the win probability for a certain team. 
+
+
+```{r}
+hierarchical_half_model <- stan_glm(home_team_win ~ score_differential.x + 
+                                        score_differential.y +
+                                        score_differential.x.x, 
+                                      data = quarter_score_diff, 
+                                      family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+
+
+```{r}
+set.seed(84735) 
+
+classification_summary(model = hierarchical_half_model, data = quarter_score_diff)
+```
+
+
+
