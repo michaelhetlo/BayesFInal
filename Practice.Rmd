@@ -270,4 +270,6 @@ pp_check(week_1)
 ```
 
 
+## Part 5
 
+Our next steps are to finish creating our prior analysis on how good each team is and then we will complicate our model more and we may try to create a shiny app to make our model more interactive so that people can enter certain teams and game situations to predict the win probability for a certain team. 
