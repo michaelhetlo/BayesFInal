@@ -204,7 +204,7 @@ score_diff_data <- halftime_score_diff_2020 %>%
 
 first_q_diff <- data_new %>%
   filter(quarter_end == 1 & qtr == 1 & season_type == "REG") %>%
-  mutate(score_differential_1 = total_home_score- total_away_score)%>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
   select(game_id, home_team, away_team, score_differential)
 
 second_q_diff <- data_new %>%
@@ -304,7 +304,7 @@ Our next steps are to finish creating our prior analysis on how good each team i
 
 
 ```{r}
-hierarchical_half_model <- stan_glm(home_team_win ~ score_differential.x + 
+hierarchical_quarter_model <- stan_glm(home_team_win ~ score_differential.x + 
                                         score_differential.y +
                                         score_differential.x.x, 
                                       data = quarter_score_diff, 
@@ -313,12 +313,14 @@ hierarchical_half_model <- stan_glm(home_team_win ~ score_differential.x +
 ```
 
 
-
 ```{r}
-set.seed(84735) 
-
-classification_summary(model = hierarchical_half_model, data = quarter_score_diff)
+pp_check(hierarchical_quarter_model)
 ```
 
+```{r}
+classification_summary(hierarchical_quarter_model, quarter_score_diff)
+
+
+```
 
 
