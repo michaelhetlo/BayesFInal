@@ -324,3 +324,65 @@ classification_summary(hierarchical_quarter_model, quarter_score_diff)
 ```
 
 
+```{r}
+library(naniar)
+```
+
+
+```{r}
+data_new_2 <- data_new %>%
+  mutate(field_goal_result_ = if_else(field_goal_result == "made", 1, 0)) %>%
+  mutate(field_goal_result_ = if_else(is.na(field_goal_result_), 0, 1)) %>%
+  mutate(extra_point_result_ = if_else(extra_point_result == "good", 1, 0)) %>%
+  mutate(extra_point_result_ = if_else(is.na(extra_point_result_) , 0, 1)) %>%
+  mutate(two_point_conv_result_ = if_else(two_point_conv_result == "success", 1, 0)) %>%
+  mutate(two_point_conv_result_ = if_else(is.na(two_point_conv_result_), 0, 1)) 
+  
+  
+home_win_data <-data_new_2 %>%
+  filter(game_seconds_remaining == 0 & season_type == "REG") %>%
+  mutate(score_differential_ = home_score - away_score) %>%
+  mutate(home_team_win = if_else(score_differential_ > 0, 1, 0)) %>%
+  select(game_id, home_team_win)
+  
+
+
+scoring_play_data<- data_new_2  %>%
+  left_join(home_win_data, by = "game_id") %>%
+  filter(field_goal_result_ == 1 |
+           extra_point_result_ == 1 |
+           touchdown == 1 |
+           two_point_conv_result_ == 1 |
+           safety == 1) %>%
+  select(home_team, away_team, field_goal_result_, extra_point_result_, touchdown, two_point_conv_result_, safety, game_id, home_score, away_score, home_team_win, score_differential_post)
+
+
+scoring_play_data %>%
+  add_n
+
+```
+
+
+
+
+```{r}
+scoring_play_model <- stan_glm(home_team_win ~ score_differential_post, 
+                               data = scoring_play_data, 
+                               family = binomial, 
+                               chains = 4,
+                               iter = 5000*2,
+                               seed = 84735, 
+                               refresh = 0)
+```
+
+
+
+```{r}
+pp_check(scoring_play_model)
+```
+
+
+```{r}
+classification_summary(scoring_play_model, scoring_play_data)
+```
+
