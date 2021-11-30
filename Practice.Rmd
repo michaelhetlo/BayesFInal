@@ -324,9 +324,6 @@ classification_summary(hierarchical_quarter_model, quarter_score_diff)
 ```
 
 
-```{r}
-library(naniar)
-```
 
 
 ```{r}
