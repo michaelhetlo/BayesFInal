@@ -66,60 +66,6 @@ table(binary_prediction)
 ```
 
 ```{r}
-test.new <- test %>%
-  filter(week <= 9)
-```
-
-```{r}
-second_model.with.test.new <- stan_glmer(
-  win ~ wins.x + loss.x + wins.y + loss.y + week + (1 | team) + (1 | opp.team),
-  data = test.new,
-  family = binomial,
-  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
-```
-
-```{r}
-set.seed(84735)
-binary_prediction <- posterior_predict(
-  second_model.with.test.new,
-  newdata = data.frame(wins.x = 3, loss.x = 5, wins.y = 3, loss.y = 5, week = 9, team = 'IND', opp.team = 'JAX'))
-```
-
-```{r}
-table(binary_prediction)
-```
-
-```{r}
-10875/(9125+10875)
-```
-
-
-```{r}
-set.seed(84735)
-binary_prediction <- posterior_predict(
-  second_model.with.test.new,
-  newdata = data.frame(wins.x = 8, loss.x = 1, wins.y = 4, loss.y = 4, week = 9, team = 'LA', opp.team = 'SEA'))
-```
-
-```{r}
-table(binary_prediction)
-```
-
-```{r}
-14960 / (5040+14960)
-```
-
-```{r}
-week10testdata <- test %>%
-  filter(week == 9)
-```
-
-```{r}
-classification_summary(second_model.with.test.new, data = week10testdata)
-```
-
-
-```{r}
 set.seed(84735)
 binary_prediction <- posterior_predict(
   second_model,
@@ -227,5 +173,69 @@ fourth_model <- stan_glm(
 
 ```{r}
 classification_summary(fourth_model, data = test)
+```
+
+```{r}
+test.new <- test %>%
+  filter(week <= 9)
+```
+
+```{r}
+second_model.with.test.new <- stan_glmer(
+  win ~ wins.x + loss.x + wins.y + loss.y + py.pg.x + pya.pg.x + ry.pg.x + rya.pg.x + (1 | team) + (1 | opp.team),
+  data = test.new,
+  family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+```{r}
+set.seed(84735)
+binary_prediction <- posterior_predict(
+  second_model.with.test.new,
+  newdata = data.frame(wins.x = 3, loss.x = 5, wins.y = 3, loss.y = 5, week = 10, team = 'IND', opp.team = 'JAX', py.pg.x = 274.6667, pya.pg.x = 281, ry.pg.x = 113.5556, rya.pg.x = 107.7778, py.pg.y = 203.8889, pya.pg.y = 242.1111, ry.pg.y = 114.4444, rya.pg.y = 99.77778))
+```
+
+```{r}
+table(binary_prediction)
+```
+
+```{r}
+10632 / (9368 + 10632)
+```
+
+```{r}
+10875/(9125+10875)
+```
+
+
+```{r}
+set.seed(84735)
+binary_prediction <- posterior_predict(
+  second_model.with.test.new,
+  newdata = data.frame(wins.x = 8, loss.x = 1, wins.y = 4, loss.y = 4, week = 10, team = 'LA', opp.team = 'SEA'))
+```
+
+```{r}
+table(binary_prediction)
+```
+
+```{r}
+14960 / (5040+14960)
+```
+
+```{r}
+week10testdata <- test %>%
+  filter(week == 9)
+```
+
+```{r}
+classification_summary(second_model.with.test.new, data = week10testdata)
+```
+
+```{r}
+test %>%
+  filter(week == 10, 
+         team == 'LA') %>%
+  select(team, opp.team, py.pg.x, pya.pg.x, ry.pg.x, rya.pg.x, py.pg.y, pya.pg.y, ry.pg.y, rya.pg.y)
 ```
 

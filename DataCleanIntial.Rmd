@@ -6258,7 +6258,6 @@ a <- sch2018 %>%
 y18.total.plus %>%
   mutate(opp.team = team) %>%
   select(-team) %>%
-  mutate_al
   left_join(a)
 ```
 
@@ -6272,7 +6271,7 @@ b <- y18.total.plus %>%
 
 c <- b %>%
   rbind(y18.total.plus) %>%
-  select(team, week, wins, loss, tie)
+  select(team, week, wins, loss, tie, pass.yards, pass.yards.against, rushing_yards, rushing_yards.against)
 ```
 
 ```{r}
@@ -6332,6 +6331,19 @@ test <- h %>%
   left_join(cc) %>%
   mutate(win = ifelse(is.na(win) == TRUE, 0, win)) %>%
   filter(is.na(team) == FALSE)
+```
+
+```{r}
+test <- test %>%
+  mutate(py.pg.x = pass.yards.x / (wins.x + loss.x + tie.x), 
+         pya.pg.x = pass.yards.against.x / (wins.x + loss.x + tie.x), 
+         ry.pg.x = rushing_yards.x / (wins.x + loss.x + tie.x), 
+         rya.pg.x = rushing_yards.against.x / (wins.x + loss.x + tie.x), 
+         py.pg.y = pass.yards.y / (wins.y + loss.y + tie.y),
+         pya.pg.y = pass.yards.against.y / (wins.y + loss.y + tie.y),
+         ry.pg.y = rushing_yards.y / (wins.y + loss.y + tie.y), 
+         rya.pg.y = rushing_yards.against.y / (wins.y + loss.y + tie.y)) %>%
+  mutate_all(~replace(., is.nan(.), 0))
 ```
 
 ```{r}
