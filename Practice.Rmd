@@ -353,7 +353,7 @@ scoring_play_data<- data_new_2  %>%
            touchdown == 1 |
            two_point_conv_result_ == 1 |
            safety == 1) %>%
-  select(home_team, away_team, field_goal_result_, extra_point_result_, touchdown, two_point_conv_result_, safety, game_id, home_score, away_score, home_team_win, score_differential_post)
+  select(home_team, away_team, field_goal_result_, extra_point_result_, touchdown, two_point_conv_result_, safety, game_id, home_score, away_score, home_team_win, score_differential_post, game_seconds_remaining)
 
 
 down_sample_scoring <- scoring_play_data %>%
@@ -369,8 +369,8 @@ down_sample_scoring <- scoring_play_data %>%
 
 
 ```{r}
-scoring_play_model <- stan_glmer(home_team_win ~ score_differential_post + (1|game_id), 
-                               data = down_sample_scoring, 
+scoring_play_model <- stan_glm(home_team_win ~ score_differential_post + game_seconds_remaining, 
+                               data = scoring_play_data, 
                                family = binomial, 
                                chains = 4,
                                iter = 5000*2,
