@@ -21,6 +21,7 @@ library(forcats)
 library(bayesplot)
 library(lubridate)
 library(nflfastR)
+library(naniar)
 ```
 
 
@@ -346,6 +347,7 @@ home_win_data <-data_new_2 %>%
 
 scoring_play_data<- data_new_2  %>%
   left_join(home_win_data, by = "game_id") %>%
+  filter(season_type == "REG") %>%
   filter(field_goal_result_ == 1 |
            extra_point_result_ == 1 |
            touchdown == 1 |
@@ -354,8 +356,12 @@ scoring_play_data<- data_new_2  %>%
   select(home_team, away_team, field_goal_result_, extra_point_result_, touchdown, two_point_conv_result_, safety, game_id, home_score, away_score, home_team_win, score_differential_post)
 
 
-scoring_play_data %>%
-  add_n
+down_sample_scoring <- scoring_play_data %>%
+  filter(game_id == "2020_16_CHI_JAX" | game_id == "2020_01_CLE_BAL"| game_id == "2020_08_LAC_DEN" | game_id == "2020_07_BUF_NYJ" | game_id == "2020_16_PHI_DAL" | game_id == "2020_14_MIN_TB" | game_id == "2020_01_CHI_DET" | game_id == "2020_03_DET_ARI" | game_id == "2020_16_CIN_HOU" | game_id == "	
+2020_06_DEN_NE" | game_id == "2020_07_PIT_TEN" | game_id == "2020_03_WAS_CLE" | game_id == "2020_07_SEA_ARI
+" | game_id == "2020_03_SF_NYG" | game_id == "2020_08_NE_BUF" | game_id == "2020_09_NO_TB" | game_id == "2020_06_WAS_NYG" | game_id == "2020_12_CLE_JAX" | game_id == "2020_10_BUF_ARI" | game_id == "2020_04_NO_DET")
+
+
 
 ```
 
@@ -363,13 +369,12 @@ scoring_play_data %>%
 
 
 ```{r}
-scoring_play_model <- stan_glm(home_team_win ~ score_differential_post, 
-                               data = scoring_play_data, 
+scoring_play_model <- stan_glmer(home_team_win ~ score_differential_post + (1|game_id), 
+                               data = down_sample_scoring, 
                                family = binomial, 
                                chains = 4,
                                iter = 5000*2,
-                               seed = 84735, 
-                               refresh = 0)
+                               seed = 84735)
 ```
 
 
@@ -379,7 +384,8 @@ pp_check(scoring_play_model)
 ```
 
 
+
 ```{r}
-classification_summary(scoring_play_model, scoring_play_data)
+classification_summary(scoring_play_model, down_sample_scoring)
 ```
 
