@@ -6362,3 +6362,75 @@ classification_summary(first_model, data = test)
 write.csv(test, 'first.model.csv')
 ```
 
+```{r}
+data_new <- load_pbp(2020)
+```
+
+
+```{r}
+halftime_score_diff_2020 <- data_new %>%
+  filter(half_seconds_remaining == 0 & game_half == "Half1" & season_type == "REG")%>%
+  mutate(score_differential = total_home_score - total_away_score)%>%
+  select(game_id, home_team, away_team, game_half, score_differential)
+```
+
+
+```{r}
+end_score_diff_2020 <- data_new %>%
+  filter(half_seconds_remaining == 0 & game_half == "Half2" & season_type == "REG")%>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential) %>%
+  mutate(home_team_win = if_else(score_differential > 0, 1, 0))
+
+score_diff_data <- halftime_score_diff_2020 %>%
+  inner_join(end_score_diff_2020, by = "game_id")
+
+first_q_diff <- data_new %>%
+  filter(quarter_end == 1 & qtr == 1 & season_type == "REG") %>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential)
+
+second_q_diff <- data_new %>%
+  filter(quarter_end == 1 & qtr == 2 & season_type == "REG") %>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential) 
+
+third_q_diff <- data_new %>%
+  filter(quarter_end == 1 & qtr == 3 & season_type == "REG") %>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential)
+
+fourth_q_diff <- data_new %>%
+  filter(quarter_end == 1 & qtr == 4 & season_type == "REG") %>%
+  mutate(score_differential = total_home_score- total_away_score)%>%
+  select(game_id, home_team, away_team, score_differential) %>%
+  mutate(home_team_win = if_else(score_differential > 0, 1, 0))
+
+quarter_score_diff <- first_q_diff %>%
+  inner_join(second_q_diff, by = "game_id") %>%
+   inner_join(third_q_diff, by = "game_id") %>%
+   inner_join(end_score_diff_2020, by = "game_id") 
+
+
+```
+
+```{r}
+write.csv(quarter_score_diff, file = 'quarter_score_diff.csv')
+```
+
+
+```{r}
+hierarchical_quarter_model <- stan_glm(home_team_win ~ score_differential.x + 
+                                        score_differential.y +
+                                        score_differential.x.x, 
+                                      data = quarter_score_diff, 
+                                      family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+
+log(pi/(1-pi))
+
+```{r}
+saveRDS(hierarchical_quarter_model, file = 'quarter_model.rds')
+```

@@ -51,7 +51,8 @@ classification_summary(second_model, data = test)
 set.seed(84735)
 binary_prediction <- posterior_predict(
   second_model,
-  newdata = data.frame(wins.x = 8, loss.x = 1, wins.y = 4, loss.y = 4, week = 9, team = 'LA', opp.team = 'SEA'))
+  newdata = data.frame(wins.x = 8, loss.x = 1, wins.y = 4, loss.y = 4, week = 9, team = 'LA', opp.team = 'SEA')) %>%
+  as.data.frame(.)
 ```
 
 LA WIN 13-3
