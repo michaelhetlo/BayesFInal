@@ -345,6 +345,16 @@ classification_summary(hierarchical_quarter_model_new,quarter_score_diff)
 
 
 
+
+```{r}
+game_pred <- posterior_predict(hierarchical_quarter_model_new, data.frame(score_differential.x = -8,score_differential.y = -4, score_differential.x.x = -8, game_id = "2021_12_DAL_LV"))
+```
+
+```{r}
+mean(game_pred)
+```
+
+
 ```{r}
 data_new_2 <- data_new %>%
   mutate(field_goal_result_ = if_else(field_goal_result == "made", 1, 0)) %>%
