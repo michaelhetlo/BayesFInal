@@ -325,6 +325,24 @@ classification_summary(hierarchical_quarter_model, quarter_score_diff)
 ```
 
 
+```{r}
+hierarchical_quarter_model_new <- stan_glmer(home_team_win ~ score_differential.x + 
+                                        score_differential.y +
+                                        score_differential.x.x + (1|game_id), 
+                                      data = quarter_score_diff, 
+                                      family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735)
+```
+
+
+```{r}
+pp_check(hierarchical_quarter_model_new)
+```
+
+```{r}
+classification_summary(hierarchical_quarter_model_new,quarter_score_diff)
+```
+
 
 
 ```{r}
