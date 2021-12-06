@@ -397,7 +397,7 @@ down_sample_scoring <- scoring_play_data %>%
 
 
 ```{r}
-scoring_play_model <- stan_glm(home_team_win ~ score_differential_post + game_seconds_remaining, 
+scoring_play_model <- stan_glmer(home_team_win ~ score_differential_post + game_seconds_remaining + (1|game_id), 
                                data = scoring_play_data, 
                                family = binomial, 
                                chains = 4,
@@ -414,6 +414,20 @@ pp_check(scoring_play_model)
 
 
 ```{r}
-classification_summary(scoring_play_model, down_sample_scoring)
+classification_summary(scoring_play_model, scoring_play_data)
+```
+
+
+
+
+```{r}
+game_pred_2 <- posterior_predict(scoring_play_model, data.frame(score_differential_post = -5, game_seconds_remaining = 1200, game_id = "2021_12_DAL_LV"))
+
+mean(game_pred_2)
+
+game_pred_3 <- posterior_predict(scoring_play_model, data.frame(score_differential_post = 50, game_seconds_remaining = 40, game_id = "2021_6_PIT_SEA"))
+
+
+mean(game_pred_3)
 ```
 
