@@ -1,0 +1,46 @@
+---
+title: "Testings"
+author: "Michael Helton"
+date: "12/7/2021"
+output: html_document
+---
+```{r}
+# Load packages
+library(bayesrules)
+library(tidyverse)
+library(rstanarm)
+library(broom.mixed)
+library(tidybayes)
+library(forcats)
+library(bayesplot)
+library(lubridate)
+library(nflfastR)
+```
+
+
+```{r}
+model <- readRDS("quarter_model.rds")
+```
+
+```{r}
+predictions <- posterior_predict(model, newdata = data.frame(score_differential.x = 0, 
+                                                             score_differential.y = 3, 
+                                                             score_differential.x.x = 10)) %>%
+  as.data.frame(.) %>%
+  summarise(Prob = mean(`1`))
+```
+
+```{r}
+predictions %>%
+  summarise(Prob = mean(`1`))
+```
+
+
+
+
+
+
+
+
+
+
