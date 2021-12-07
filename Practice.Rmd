@@ -340,7 +340,7 @@ pp_check(hierarchical_quarter_model_new)
 ```
 
 ```{r}
-classification_summary(hierarchical_quarter_model_new,quarter_score_diff)
+classification_summary(hierarchical_quarter_model_new,quarter_score_diff,cutoff = .5)
 ```
 
 ```{r}
@@ -360,6 +360,10 @@ exp(model_sum$estimate[1] + model_sum$estimate[2]*-5 + model_sum$estimate[3]*8 +
 ```
 
 
+```{r}
+tidy_sigma <- tidy(hierarchical_quarter_model_new, effects = "ran_pars")
+tidy_sigma
+```
 
 
 ```{r}
