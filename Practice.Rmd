@@ -349,9 +349,9 @@ model_sum
 ```
 
 ```{r}
-exp(model_sum$estimate)/(1+exp(model_sum$estimate))
+exp(model_sum$estimate)
 ```
-Our mean population states that at the start of the beginning of the game we predict that the home team will win in regulation 41% of the time. 
+
 
 Score.x is the increase in win probability for score differential 
 
