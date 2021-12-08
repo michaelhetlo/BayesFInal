@@ -1,5 +1,5 @@
 ---
-title: "Project Checkpoint 3"
+title: "Project Checkpoint 4"
 output: html_document
 ---
 
@@ -422,16 +422,13 @@ exp(model_sum$estimate[1] + model_sum$estimate[2]*-5 + model_sum$estimate[3]*8 +
 ```
 
 
-```{r}
-tidy_sigma <- tidy(hierarchical_quarter_model_new, effects = "ran_pars")
-tidy_sigma
-```
+
 
 
 Example of predicting scores from a new game
 
 ```{r}
-game_pred <- posterior_predict(hierarchical_quarter_model_new, data.frame(score_differential.x = -8,score_differential.y = -4, score_differential.x.x = -8, game_id = "2021_12_DAL_LV"))
+game_pred <- posterior_predict(hierarchical_quarter_model_3, data.frame(score_differential.x = -8,score_differential.y = -4, score_differential.x.x = -8, game_id = "2021_12_DAL_LV"))
 ```
 
 ```{r}
