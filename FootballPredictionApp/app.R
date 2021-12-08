@@ -28,7 +28,7 @@ body <-dashboardBody(
     tabItems(
         # First tab content
         tabItem(tabName = "dashboard",
-                h2("We should put an introduction section here and explain our methodology and shit.")
+                h2("We should put an introduction section here and explain our methodology and stuff.")
         ),
         
         

@@ -438,3 +438,19 @@ game_pred <- posterior_predict(hierarchical_quarter_model_new, data.frame(score_
 mean(game_pred)
 ```
  
+# Checkpoint Questions
+# 1
+I cleaned up the html output from suggestions on checkpoint 3. We are planning to use the Shiny App as our final visualization. The code should be able to be seen now. I hid the codebook as we are going to update our variable names. 
+
+
+#2
+Jake and I worked on creating and finalizing the posterior model (model 3). We also made sure that it made reasonable predictions on new data. Michael worked on possible prior models. He also began the Shiny App. 
+
+
+#3
+Posterior Predictions - We still are planning to incorporate home field advantage as prior. 
+
+We are planning to use shiny dashboard to make our results look better. We are going to create more tabs that incorporate our other models. We have not decided on whether we are making a report in Shiny or seperate
+
+
+This is an idea that we are also going to look into - Possible 4th model - To incorporate home team 
