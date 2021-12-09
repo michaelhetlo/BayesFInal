@@ -19,6 +19,18 @@ library(nflfastR)
 
 
 ```{r}
+modelpre <- readRDS('pregame_model.rds')
+model1st <- readRDS('first_quarter.rds')
+model2nd <- readRDS('second_quarter.rds')
+model3rd <- readRDS("third_quarter.rds")
+```
+
+```{r}
+tidy(modelpre)
+```
+
+
+```{r}
 model <- readRDS("quarter_model.rds")
 ```
 
