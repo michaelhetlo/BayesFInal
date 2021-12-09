@@ -68,7 +68,7 @@ ui <- dashboardPage(
                                 value = 0))
     )))
 
-ui <-dashboardPage(header, sidebar, body)
+# ui <-dashboardPage(header, sidebar, body)
     
 
 server <- function(input, output) {
