@@ -24,18 +24,15 @@ sidebar <-dashboardSidebar(
     )
 )
 
-<<<<<<< HEAD
 ui <- dashboardPage(
     dashboardHeader(title = "Win Probability Predictions"),
     dashboardSidebar(
         sidebarMenu(
             menuItem("dashboard" , tabName = "dashboard"),
-            menuItem("Predictions", tabName = "StartofGame", icon = icon("th"),
+            menuItem("Predictions", tabName = "StartofGame", icon = icon("th")),
             menuItem('FirstQuarter', tabName = 'FirstQuarter'),
             menuItem('SecondQuarter', tabName = 'SecondQuarter'),
-            menuItem('ThirdQuarter', tabName = 'ThirdQuarter'))
-        )
-    ),
+            menuItem('ThirdQuarter', tabName = 'ThirdQuarter'))),
     dashboardBody(
         tabItems(
             # First tab content
@@ -69,51 +66,7 @@ ui <- dashboardPage(
                                 min = -30,
                                 max = 30,
                                 value = 0))
-    ))
-=======
-body <-dashboardBody(
-    tabItems(
-        # First tab content
-        tabItem(tabName = "dashboard",
-                h2("We should put an introduction section here and explain our methodology and stuff.")
-        ),
-        
-        
-        # Second tab content
-        tabItem(tabName = "prior",
-                h2('Priors Soon')
-        ),
-        
-        tabItem(tabName = "first", 
-                h2("Model coming soon")
-        ), 
-        
-        tabItem(tabName = "second", 
-                h2("Hopefully this works")
-        ), 
-        tabItem(tabName = "third", 
-                box(tableOutput('binary_prediction')),
-                box(title = 'inputs',
-                    sliderInput(inputId = "score_differential.x",
-                                label = "Score Differential 1st",
-                                min = -30,
-                                max = 30,
-                                value = 0),
-                    sliderInput(inputId = "score_differential.y",
-                                label = "Score Differential 2nd",
-                                min = -30,
-                                max = 30,
-                                value = 0),
-                    sliderInput(inputId = "score_differential.x.x",
-                                label = "Score Differential 3rd",
-                                min = -30,
-                                max = 30,
-                                value = 0)
-                )
-        )
-    )
->>>>>>> 1aa7654357a6b4a0bb210e198cb77bff911d965e
-)
+    )))
 
 ui <-dashboardPage(header, sidebar, body)
     
