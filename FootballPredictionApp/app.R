@@ -10,7 +10,7 @@ library(lubridate)
 library(nflfastR)
 library(shinydashboard)
 
-model <- readRDS("quarter_model.rds")
+model3rd <- readRDS("quarter_model.rds")
 
 
 header<-dashboardHeader(title = "Win Probability Predictions")
@@ -43,10 +43,25 @@ ui <- dashboardPage(
                     box(title = 'Prediction Start of Game')),
             # Third tab content
             tabItem(tabName = "FirstQuarter",
-                    box(title = 'Prediction After First Quarter')),
+                    box(title = 'Prediction After First Quarter'),
+                    sliderInput(inputId = "",
+                                label = "Score Differential 1st",
+                                min = -30,
+                                max = 30,
+                                value = 0)),
             # Fourth tab content
             tabItem(tabName = "SecondQuarter",
-                    box(title = 'Prediction After Second Quarter')),
+                    box(title = 'Prediction After Second Quarter'),
+                    sliderInput(inputId = "",
+                                label = "Score Differential 1st",
+                                min = -30,
+                                max = 30,
+                                value = 0),
+                    sliderInput(inputId = "",
+                                label = "Score Differential 2nd",
+                                min = -30,
+                                max = 30,
+                                value = 0)),
             # Fifth tab content
             tabItem(tabName = "ThirdQuarter",
                     box(title = 'Prediction After Third Quarter'),
@@ -69,7 +84,7 @@ ui <- dashboardPage(
     )))
     
 server <- function(input, output) {
-    output$binary_prediction <- renderTable(posterior_predict(model, newdata = data.frame(score_differential.x = input$score_differential.x,
+    output$binary_prediction <- renderTable(posterior_predict(model3rd, newdata = data.frame(score_differential.x = input$score_differential.x,
                                                                                           score_differential.y = input$score_differential.y,
                                                                                           score_differential.x.x = input$score_differential.x.x)) %>%
                                                 as.data.frame(.) %>%
