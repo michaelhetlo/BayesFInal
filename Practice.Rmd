@@ -1,5 +1,5 @@
 ---
-title: "Project Checkpoint 3"
+title: "Project Checkpoint 4"
 output: html_document
 ---
 
@@ -324,9 +324,70 @@ classification_summary(hierarchical_quarter_model, quarter_score_diff)
 
 ```
 
+# Model 1
 
 ```{r}
-hierarchical_quarter_model_new <- stan_glmer(home_team_win ~ score_differential.x + 
+hierarchical_quarter_model_1 <- stan_glmer(home_team_win ~ score_differential.x + 
+                                       (1|game_id), 
+                                      data = quarter_score_diff, 
+                                      family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+
+```{r}
+# pp_check(hierarchical_quarter_model_1)
+```
+
+
+```{r}
+classification_summary(hierarchical_quarter_model_1, quarter_score_diff)
+```
+
+```{r}
+mod1<- tidy(hierarchical_quarter_model_1,conf.int = TRUE,conf.level = .95)
+mod1
+```
+```{r}
+exp(mod1$estimate)
+```
+A 1 point increase in score differential increases are odds of winning by 15 percent at the end of the first quarter.
+
+# Model 2 
+
+```{r}
+hierarchical_quarter_model_2 <- stan_glmer(home_team_win ~ score_differential.x + 
+                                        score_differential.y +
+                                         (1|game_id), 
+                                      data = quarter_score_diff, 
+                                      family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+```{r}
+# pp_check(hierarchical_quarter_model_2)
+```
+
+```{r}
+classification_summary(hierarchical_quarter_model_2, quarter_score_diff)
+```
+
+```{r}
+mod_2 <- tidy(hierarchical_quarter_model_2, conf.int = TRUE, conf.level = .95)
+mod_2
+```
+
+```{r}
+exp(mod_2$estimate)
+```
+
+
+A one point increase score differential increases odds of winning by 33 percent.
+
+# Model 3
+
+```{r}
+hierarchical_quarter_model_3 <- stan_glmer(home_team_win ~ score_differential.x + 
                                         score_differential.y +
                                         score_differential.x.x + (1|game_id), 
                                       data = quarter_score_diff, 
@@ -336,41 +397,57 @@ hierarchical_quarter_model_new <- stan_glmer(home_team_win ~ score_differential.
 
 
 ```{r}
-pp_check(hierarchical_quarter_model_new)
+# bayesplot::pp_check(hierarchical_quarter_model_3, quarter_score_diff)
+```
+
+
+```{r}
+classification_summary(hierarchical_quarter_model_3,quarter_score_diff,cutoff = .5)
 ```
 
 ```{r}
-classification_summary(hierarchical_quarter_model_new,quarter_score_diff,cutoff = .5)
-```
-
-```{r}
-model_sum <- tidy(hierarchical_quarter_model_new, conf.int = TRUE, conf.level = .95)
+model_sum <- tidy(hierarchical_quarter_model_3, conf.int = TRUE, conf.level = .95)
 model_sum
 ```
 
 ```{r}
-exp(model_sum$estimate)/(1+exp(model_sum$estimate))
+exp(model_sum$estimate)
 ```
-Our mean population states that at the start of the beginning of the game we predict that the home team will win in regulation 41% of the time. 
 
-Score.x is the increase in win probability for score differential 
+
+In our model, holding other variables constant, the odds of another point greater in score differential increase our odds of winning by 35%.
 
 ```{r}
 exp(model_sum$estimate[1] + model_sum$estimate[2]*-5 + model_sum$estimate[3]*8 + model_sum$estimate[4]*-4)/(1+exp(model_sum$estimate[1] + model_sum$estimate[2]*-5 + model_sum$estimate[3]*8 + model_sum$estimate[4]*-4))
 ```
 
 
-```{r}
-tidy_sigma <- tidy(hierarchical_quarter_model_new, effects = "ran_pars")
-tidy_sigma
-```
 
 
+
+Example of predicting scores from a new game
+
 ```{r}
-game_pred <- posterior_predict(hierarchical_quarter_model_new, data.frame(score_differential.x = -16,score_differential.y = -8, score_differential.x.x = 8, game_id = "2021_12_DAL_LV"))
+game_pred <- posterior_predict(hierarchical_quarter_model_3, data.frame(score_differential.x = -8,score_differential.y = -4, score_differential.x.x = -8, game_id = "2021_12_DAL_LV"))
 ```
 
 ```{r}
 mean(game_pred)
 ```
  
+# Checkpoint Questions
+# 1
+I cleaned up the html output from suggestions on checkpoint 3. We are planning to use the Shiny App as our final visualization. The code should be able to be seen now. I hid the codebook as we are going to update our variable names. 
+
+
+#2
+Jake and I worked on creating and finalizing the posterior model (model 3). We also made sure that it made reasonable predictions on new data. Michael worked on possible prior models. He also began the Shiny App. 
+
+
+#3
+Posterior Predictions - We still are planning to incorporate home field advantage as prior. 
+
+We are planning to use shiny dashboard to make our results look better. We are going to create more tabs that incorporate our other models. We have not decided on whether we are making a report in Shiny or seperate
+
+
+This is an idea that we are also going to look into - Possible 4th model - To incorporate home team 
