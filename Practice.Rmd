@@ -346,6 +346,11 @@ saveRDS(log_model_0,"pregame_model.rds")
 classification_summary(log_model_0,quarter_score_diff)
 ```
 
+```{r}
+mod_0<-tidy(log_model_0)
+exp(mod_0$estimate)
+```
+
 
 # Model 1
 
@@ -360,14 +365,17 @@ log_model_1 <- stan_glm(home_team_win ~ score_differential.x + spread_line.x,
 classification_summary(log_model_1, quarter_score_diff)
 ```
 
+```{r}
+log
+```
 
 
 ```{r}
-hierarchical_quarter_model_1 <- stan_glmer(home_team_win ~ score_differential.x + 
-                                       (1|game_id), 
-                                      data = quarter_score_diff, 
-                                      family = binomial,
-  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+# hierarchical_quarter_model_1 <- stan_glmer(home_team_win ~ score_differential.x + 
+#                                        (1|game_id), 
+#                                       data = quarter_score_diff, 
+#                                       family = binomial,
+#   chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
 ```
 
 
@@ -381,7 +389,7 @@ classification_summary(hierarchical_quarter_model_1, quarter_score_diff)
 ```
 
 ```{r}
-mod1<- tidy(hierarchical_quarter_model_1,conf.int = TRUE,conf.level = .95)
+mod1<- tidy(log_model_1,conf.int = TRUE,conf.level = .95)
 mod1
 ```
 ```{r}
@@ -418,12 +426,19 @@ classification_summary(log_model_2, quarter_score_diff)
 
 
 ```{r}
-hierarchical_quarter_model_2 <- stan_glmer(home_team_win ~ score_differential.x + 
-                                        score_differential.y + spread_line.x + 
-                                         (1|game_id), 
-                                      data = quarter_score_diff, 
-                                      family = binomial,
-  chains = 4, iter = 5000*2, seed = 84735)
+mod2 <- tidy(log_model_2)
+
+exp(mod2$estimate)
+```
+
+
+```{r}
+# hierarchical_quarter_model_2 <- stan_glmer(home_team_win ~ score_differential.x + 
+#                                         score_differential.y + spread_line.x + 
+#                                          (1|game_id), 
+#                                       data = quarter_score_diff, 
+#                                       family = binomial,
+#   chains = 4, iter = 5000*2, seed = 84735)
 ```
 
 ```{r}
