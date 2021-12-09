@@ -67,10 +67,7 @@ ui <- dashboardPage(
                                 max = 30,
                                 value = 0))
     )))
-
-# ui <-dashboardPage(header, sidebar, body)
     
-
 server <- function(input, output) {
     output$binary_prediction <- renderTable(posterior_predict(model, newdata = data.frame(score_differential.x = input$score_differential.x,
                                                                                           score_differential.y = input$score_differential.y,
