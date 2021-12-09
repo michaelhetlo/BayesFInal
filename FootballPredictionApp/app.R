@@ -12,24 +12,12 @@ library(shinydashboard)
 
 model3rd <- readRDS("quarter_model.rds")
 
-
-header<-dashboardHeader(title = "Win Probability Predictions")
-sidebar <-dashboardSidebar(
-    sidebarMenu(
-        menuItem("dashboard" , tabName = "dashboard"),
-        menuItem("Beginning of Game", tabName = "prior", icon = icon("th")),
-        menuItem("End of First Quarter", tabName = "first"), 
-        menuItem("End of Second Quarter", tabName = "second"), 
-        menuItem("End of Third Quarter", tabName = "third")
-    )
-)
-
 ui <- dashboardPage(
     dashboardHeader(title = "Win Probability Predictions"),
     dashboardSidebar(
         sidebarMenu(
-            menuItem("dashboard" , tabName = "dashboard"),
-            menuItem("Predictions", tabName = "StartofGame", icon = icon("th")),
+            menuItem("Welcome Page" , tabName = "dashboard"),
+            menuItem("Start of Game", tabName = "StartofGame"),
             menuItem('FirstQuarter', tabName = 'FirstQuarter'),
             menuItem('SecondQuarter', tabName = 'SecondQuarter'),
             menuItem('ThirdQuarter', tabName = 'ThirdQuarter'))),
