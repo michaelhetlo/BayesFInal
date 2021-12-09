@@ -197,7 +197,7 @@ halftime_score_diff_2020 <- data_new %>%
 end_score_diff_2020 <- data_new %>%
   filter(half_seconds_remaining == 0 & game_half == "Half2" & season_type == "REG")%>%
   mutate(score_differential = total_home_score- total_away_score)%>%
-  select(game_id, home_team, away_team, score_differential) %>%
+  select(game_id, home_team, away_team, score_differential,spread_line) %>%
   mutate(home_team_win = if_else(score_differential > 0, 1, 0))
 
 score_diff_data <- halftime_score_diff_2020 %>%
@@ -206,7 +206,7 @@ score_diff_data <- halftime_score_diff_2020 %>%
 first_q_diff <- data_new %>%
   filter(quarter_end == 1 & qtr == 1 & season_type == "REG") %>%
   mutate(score_differential = total_home_score- total_away_score)%>%
-  select(game_id, home_team, away_team, score_differential)
+  select(game_id, home_team, away_team, score_differential, spread_line)
 
 second_q_diff <- data_new %>%
   filter(quarter_end == 1 & qtr == 2 & season_type == "REG") %>%
@@ -324,7 +324,43 @@ classification_summary(hierarchical_quarter_model, quarter_score_diff)
 
 ```
 
+# Model 0 
+
+
+```{r}
+log_model_0 <- stan_glm(home_team_win ~ spread_line.x, 
+                                      data = quarter_score_diff, 
+                                      family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+
+```{r}
+saveRDS(log_model_0,"pregame_model.rds")
+
+```
+
+
+
+```{r}
+classification_summary(log_model_0,quarter_score_diff)
+```
+
+
 # Model 1
+
+```{r}
+log_model_1 <- stan_glm(home_team_win ~ score_differential.x + spread_line.x, 
+                                      data = quarter_score_diff, 
+                                      family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+```{r}
+classification_summary(log_model_1, quarter_score_diff)
+```
+
+
 
 ```{r}
 hierarchical_quarter_model_1 <- stan_glmer(home_team_win ~ score_differential.x + 
@@ -353,15 +389,41 @@ exp(mod1$estimate)
 ```
 A 1 point increase in score differential increases are odds of winning by 15 percent at the end of the first quarter.
 
+
+```{r}
+saveRDS(log_model_1,"first_quarter.rds")
+```
+
+
 # Model 2 
 
 ```{r}
-hierarchical_quarter_model_2 <- stan_glmer(home_team_win ~ score_differential.x + 
-                                        score_differential.y +
-                                         (1|game_id), 
+log_model_2 <- stan_glm(home_team_win ~ score_differential.x + 
+                                       score_differential.y+ 
+                                      spread_line.x, 
                                       data = quarter_score_diff, 
                                       family = binomial,
   chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
+```
+
+
+```{r}
+pp_check(log_model_2)
+```
+
+
+```{r}
+classification_summary(log_model_2, quarter_score_diff)
+```
+
+
+```{r}
+hierarchical_quarter_model_2 <- stan_glmer(home_team_win ~ score_differential.x + 
+                                        score_differential.y + spread_line.x + 
+                                         (1|game_id), 
+                                      data = quarter_score_diff, 
+                                      family = binomial,
+  chains = 4, iter = 5000*2, seed = 84735)
 ```
 
 ```{r}
@@ -384,12 +446,17 @@ exp(mod_2$estimate)
 
 A one point increase score differential increases odds of winning by 33 percent.
 
+```{r}
+saveRDS(log_model_2, "second_quarter.rds")
+```
+
+
 # Model 3
 
 ```{r}
-hierarchical_quarter_model_3 <- stan_glmer(home_team_win ~ score_differential.x + 
+log_model_3 <- stan_glm(home_team_win ~ score_differential.x + 
                                         score_differential.y +
-                                        score_differential.x.x + (1|game_id), 
+                                        score_differential.x.x + spread_line.x, 
                                       data = quarter_score_diff, 
                                       family = binomial,
   chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
@@ -397,16 +464,16 @@ hierarchical_quarter_model_3 <- stan_glmer(home_team_win ~ score_differential.x 
 
 
 ```{r}
-# bayesplot::pp_check(hierarchical_quarter_model_3, quarter_score_diff)
+pp_check(log_model_3, quarter_score_diff)
 ```
 
 
 ```{r}
-classification_summary(hierarchical_quarter_model_3,quarter_score_diff,cutoff = .5)
+classification_summary(log_model_3,quarter_score_diff,cutoff = .5)
 ```
 
 ```{r}
-model_sum <- tidy(hierarchical_quarter_model_3, conf.int = TRUE, conf.level = .95)
+model_sum <- tidy(log_model_3, conf.int = TRUE, conf.level = .95)
 model_sum
 ```
 
@@ -422,6 +489,9 @@ exp(model_sum$estimate[1] + model_sum$estimate[2]*-5 + model_sum$estimate[3]*8 +
 ```
 
 
+```{r}
+saveRDS(log_model_3, "third_quarter.rds")
+```
 
 
 
