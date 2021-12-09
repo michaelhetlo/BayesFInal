@@ -26,35 +26,45 @@ ui <- dashboardPage(
     dashboardSidebar(
         sidebarMenu(
             menuItem("dashboard" , tabName = "dashboard"),
-            menuItem("Start of Game", tabName = "Start of Game", icon = icon("th"))
+            menuItem("Predictions", tabName = "StartofGame", icon = icon("th"),
+            menuItem('FirstQuarter', tabName = 'FirstQuarter'),
+            menuItem('SecondQuarter', tabName = 'SecondQuarter'),
+            menuItem('ThirdQuarter', tabName = 'ThirdQuarter'))
         )
     ),
     dashboardBody(
         tabItems(
             # First tab content
             tabItem(tabName = "dashboard",
-                    box(tableOutput('binary_prediction')),
-                    box(title = 'inputs',
-                        sliderInput(inputId = "score_differential.x",
-                                                 label = "Score Differential 1st",
-                                                 min = -30,
-                                                 max = 30,
-                                                 value = 0),
-                        sliderInput(inputId = "score_differential.y",
-                                                 label = "Score Differential 2nd",
-                                                 min = -30,
-                                                 max = 30,
-                                                 value = 0),
-                        sliderInput(inputId = "score_differential.x.x",
-                                                 label = "Score Differential 3rd",
-                                                 min = -30,
-                                                 max = 30,
-                                                 value = 0),
-                                 )),
-            
+                    box(title = 'Welcome Page')),
             # Second tab content
-            tabItem(tabName = "Start of Game",
-                    box(title = 'Priors Soon'))
+            tabItem(tabName = "StartofGame",
+                    box(title = 'Prediction Start of Game')),
+            # Third tab content
+            tabItem(tabName = "FirstQuarter",
+                    box(title = 'Prediction After First Quarter')),
+            # Fourth tab content
+            tabItem(tabName = "SecondQuarter",
+                    box(title = 'Prediction After Second Quarter')),
+            # Fifth tab content
+            tabItem(tabName = "ThirdQuarter",
+                    box(title = 'Prediction After Third Quarter'),
+                    box(tableOutput('binary_prediction')),
+                    sliderInput(inputId = "score_differential.x",
+                                label = "Score Differential 1st",
+                                min = -30,
+                                max = 30,
+                                value = 0),
+                    sliderInput(inputId = "score_differential.y",
+                                label = "Score Differential 2nd",
+                                min = -30,
+                                max = 30,
+                                value = 0),
+                    sliderInput(inputId = "score_differential.x.x",
+                                label = "Score Differential 3rd",
+                                min = -30,
+                                max = 30,
+                                value = 0))
     ))
 )
 

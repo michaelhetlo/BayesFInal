@@ -23,6 +23,16 @@ model <- readRDS("quarter_model.rds")
 ```
 
 ```{r}
+plot_normal(0, 2.5)
+```
+
+
+```{r}
+prior_summary(model)
+```
+
+
+```{r}
 predictions <- posterior_predict(model, newdata = data.frame(score_differential.x = 0, 
                                                              score_differential.y = 3, 
                                                              score_differential.x.x = 10)) %>%
