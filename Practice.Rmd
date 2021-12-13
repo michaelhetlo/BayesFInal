@@ -335,6 +335,9 @@ log_model_0 <- stan_glm(home_team_win ~ spread_line.x,
 ```
 
 
+
+
+
 ```{r}
 saveRDS(log_model_0,"pregame_model.rds")
 
@@ -513,6 +516,20 @@ game_pred <- posterior_predict(hierarchical_quarter_model_3, data.frame(score_di
 ```{r}
 mean(game_pred)
 ```
+ 
+ 
+ 
+ 
+ 
+```{r}
+data_2021 <- load_pbp(2021)
+```
+ 
+ 
+```{r}
+
+```
+ 
  
 # Checkpoint Questions
 # 1
