@@ -128,11 +128,11 @@ ui <- dashboardPage(
     
 server <- function(input, output) {
     output$binary_prediction <- renderTable(posterior_predict(model3rd, newdata = data.frame(score_differential.x = input$score_differential.x,
-                                                                                          score_differential.y = input$score_differential.y,
-                                                                                          score_differential.x.x = input$score_differential.x.x,
-                                                                                          spread_line.x = -(input$spread_line_3))) %>%
-                                                as.data.frame(.) %>%
-                                               summarise(Prob = mean(`1`)))
+                                                                                                      score_differential.y = input$score_differential.y,
+                                                                                                      score_differential.x.x = input$score_differential.x.x,
+                                                                                                      spread_line.x = -(input$spread_line_3))) %>%
+                                                         as.data.frame(.) %>%
+                                                         summarise(Prob = mean(`1`)))
     output$pregame_prediction <- renderTable(posterior_predict(modelpre, newdata = data.frame(spread_line.x = -(input$spread_line_pre))) %>%
                                                  as.data.frame(.) %>%
                                                  summarise(Prob = mean(`1`)))
