@@ -335,6 +335,9 @@ log_model_0 <- stan_glm(home_team_win ~ spread_line.x,
 ```
 
 
+
+
+
 ```{r}
 saveRDS(log_model_0,"pregame_model.rds")
 
@@ -365,10 +368,6 @@ log_model_1 <- stan_glm(home_team_win ~ score_differential.x + spread_line.x,
 classification_summary(log_model_1, quarter_score_diff)
 ```
 
-```{r}
-log
-```
-
 
 ```{r}
 # hierarchical_quarter_model_1 <- stan_glmer(home_team_win ~ score_differential.x + 
@@ -385,7 +384,7 @@ log
 
 
 ```{r}
-classification_summary(hierarchical_quarter_model_1, quarter_score_diff)
+classification_summary(log_model_1, quarter_score_diff)
 ```
 
 ```{r}
@@ -406,7 +405,7 @@ saveRDS(log_model_1,"first_quarter.rds")
 # Model 2 
 
 ```{r}
-log_model_2 <- stan_glm(home_team_win ~ score_differential.x + 
+log_model_2 <- stan_glm(home_team_win ~  
                                        score_differential.y+ 
                                       spread_line.x, 
                                       data = quarter_score_diff, 
@@ -446,11 +445,11 @@ exp(mod2$estimate)
 ```
 
 ```{r}
-classification_summary(hierarchical_quarter_model_2, quarter_score_diff)
+classification_summary(log_model_2, quarter_score_diff)
 ```
 
 ```{r}
-mod_2 <- tidy(hierarchical_quarter_model_2, conf.int = TRUE, conf.level = .95)
+mod_2 <- tidy(log_model_2, conf.int = TRUE, conf.level = .95)
 mod_2
 ```
 
@@ -469,9 +468,7 @@ saveRDS(log_model_2, "second_quarter.rds")
 # Model 3
 
 ```{r}
-log_model_3 <- stan_glm(home_team_win ~ score_differential.x + 
-                                        score_differential.y +
-                                        score_differential.x.x + spread_line.x, 
+log_model_3 <- stan_glm(home_team_win ~ score_differential.x.x + spread_line.x, 
                                       data = quarter_score_diff, 
                                       family = binomial,
   chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
@@ -519,6 +516,20 @@ game_pred <- posterior_predict(hierarchical_quarter_model_3, data.frame(score_di
 ```{r}
 mean(game_pred)
 ```
+ 
+ 
+ 
+ 
+ 
+```{r}
+data_2021 <- load_pbp(2021)
+```
+ 
+ 
+```{r}
+
+```
+ 
  
 # Checkpoint Questions
 # 1
