@@ -351,6 +351,7 @@ classification_summary(log_model_0,quarter_score_diff)
 
 ```{r}
 mod_0<-tidy(log_model_0)
+mod_0
 exp(mod_0$estimate)
 ```
 
@@ -426,7 +427,7 @@ classification_summary(log_model_2, quarter_score_diff)
 
 ```{r}
 mod2 <- tidy(log_model_2)
-
+mod_2
 exp(mod2$estimate)
 ```
 
