@@ -25,13 +25,14 @@ ui <- dashboardPage(
             menuItem("Start of Game", tabName = "StartofGame"),
             menuItem('FirstQuarter', tabName = 'FirstQuarter'),
             menuItem('SecondQuarter', tabName = 'SecondQuarter'),
-            menuItem('ThirdQuarter', tabName = 'ThirdQuarter'))),
+            menuItem('ThirdQuarter', tabName = 'ThirdQuarter'),
+            menuItem('plot', tabName = 'plot'))),
     dashboardBody(
         tabItems(
             # First tab content
             tabItem(tabName = "dashboard",
                     box(title = 'NFL Win Probability Calculator',
-                        p("By: Micheal Helton, Jacob Bulling and Ty Bruckner")
+                        p("By: Michael Helton, Jacob Bulling and Ty Bruckner")
                         )), 
             # Second tab content
             tabItem(tabName = "StartofGame",
@@ -98,6 +99,30 @@ ui <- dashboardPage(
                                 label = "Score Differential 3rd",
                                 min = -30,
                                 max = 30,
+                                value = 0)),
+            # Sixith tab content
+            tabItem(tabName = "plot",
+                    box(title = 'Prediction After Third Quarter'),
+                    box(plotOutput('dataoutput')),
+                    sliderInput(inputId = "n1",
+                                label = "Pregame Probability",
+                                min = 0,
+                                max = 1,
+                                value = 0),
+                    sliderInput(inputId = "n2",
+                                label = "Quarter 1 Probability",
+                                min = 0,
+                                max = 1,
+                                value = 0),
+                    sliderInput(inputId = "n3",
+                                label = "Quarter 2 Probability",
+                                min = 0,
+                                max = 1,
+                                value = 0),
+                    sliderInput(inputId = "n4",
+                                label = "Quarter 3 Probability",
+                                min = 0,
+                                max = 1,
                                 value = 0))
     )))
     
@@ -120,6 +145,10 @@ server <- function(input, output) {
                                                                                                    score_differential.y = input$scoredif2.2nd)) %>%
                                                       as.data.frame(.) %>%
                                                       summarise(Prob = mean(`1`)))
+    output$dataoutput <- renderPlot(ggplot(data = data.frame(Preds = c(input$n1, input$n2, input$n3, input$n4), names = c('Pregame', 'Quarter 1', 'Quarter 2', 'Quarter 3'), game = c('game', 'game', 'game', 'game')), aes(x = names, y = Preds, group = game)) + 
+                                        geom_line() + 
+                                        geom_point() + 
+                                        ylim(0, 1))
 }
 # Run the application
 shinyApp(ui = ui, server = server)
