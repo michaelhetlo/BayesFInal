@@ -9,6 +9,7 @@ library(bayesplot)
 library(lubridate)
 library(nflfastR)
 library(shinydashboard)
+library(ggplot2)
 
 modelpre <- readRDS('pregame_model.rds')
 model1st <- readRDS('first_quarter.rds')
