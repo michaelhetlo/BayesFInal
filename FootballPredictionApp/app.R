@@ -20,6 +20,7 @@ ui <- dashboardPage(
     dashboardSidebar(
         sidebarMenu(
             menuItem("Welcome Page" , tabName = "dashboard"),
+            menuItem("Motivation and Background", tabName = "background"),
             menuItem("Start of Game", tabName = "StartofGame"),
             menuItem('FirstQuarter', tabName = 'FirstQuarter'),
             menuItem('SecondQuarter', tabName = 'SecondQuarter'),
@@ -28,7 +29,9 @@ ui <- dashboardPage(
         tabItems(
             # First tab content
             tabItem(tabName = "dashboard",
-                    box(title = 'Welcome Page')),
+                    box(title = 'NFL Win Probability Calculator',
+                        p("By: Micheal Helton, Jacob Bulling and Ty Bruckner")
+                        )), 
             # Second tab content
             tabItem(tabName = "StartofGame",
                     box(title = 'Prediction Start of Game'),
