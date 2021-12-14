@@ -27,7 +27,8 @@ ui <- dashboardPage(
             menuItem('Second Quarter', tabName = 'SecondQuarter'),
             menuItem('Third Quarter', tabName = 'ThirdQuarter'),
             menuItem('Plot', tabName = 'Plot'), 
-            menuItem("Modeling Methodology", tabName = "methodology"))),
+            menuItem("Modeling Methodology", tabName = "methodology"),
+            menuItem("NextSteps",tabName = "nextst"))),
     dashboardBody(
         tabItems(
             # First tab content
@@ -39,9 +40,6 @@ ui <- dashboardPage(
             tabItem(tabName = "background", 
                     box(title = "Motivation and Background"), 
                     p("Welcome to our NFL win probability predictor! 
-                    Our goal when starting the project was to create a play by play win probability model that would update after every play based on many different factors including the intrinsic skill of the team, the score differential and the time left in the game.
-                    This operation proved to be quite daunting given the time that we had to finish the project.
-                    We then shifted our focus into creating a win probability model after each scoring play, which for some reason while we ran that model it was far overfit to the data and when applied to outside data on our predictions it did not work at all, given the time we had remaining we decided to move on with a model that evaluates the win probability after the first, second, and third quarters.
                     This project was inspired by the ESPN FPI win probability calculator, they have an exhaustive model that does a very good job predicting win probability, fivethirtyeight also has a win probability model that they use to predict every game of the season and is widely considered one of the best football win probability models around."), 
                     p("To use this app, click the tab to choose which model you would like to use based on what point in the game you would like to predict from. 
                       Based on what quarter you decide to use, you can use the sliders to enter the information on what the score differential was from the home team’s perspective at the end of the first, second, or third quarter and the pregame spread line. 
@@ -159,8 +157,20 @@ ui <- dashboardPage(
                     p("Q1 - Every 1 point increase in score differential at the end of the first quarter increases our odds of winning by 10 percent"),
                     p("Accuracy - 71.3%"),
                     p("𝛃0 - The logged odds of winning when the game is a pick’em and the score is tied after the 1st quarter. 𝛃0 = -.27 which equates to an odds of .76. The odds of winning are less than 1 due to the fact that our outcome accounts for regulations wins."),
-                    p("𝛃1 - The increase in logged odds when the spread increases by 1. 𝛃1 = .15 . Every 1 point increase in the spread line increases our odds of winning by 16 percent.")))
-    ))
+                    p("𝛃1 - The increase in logged odds when the spread increases by 1. 𝛃1 = .15 . Every 1 point increase in the spread line increases our odds of winning by 16 percent.")),
+        
+        # Eighth tab content
+        tabItem(tabName = "nextst",
+                p("Our goal when starting the project was to create a play by play win probability model that would update after every play based on many different factors including the intrinsic skill of the team, the score differential and the time left in the game. 
+                  This operation proved to be quite daunting given the time that we had to finish the project. 
+                  We then shifted our focus into creating a win probability model after each scoring play, which for some reason while we ran that model it was far overfit to the data and when applied to outside data on our predictions it did not work at all, given the time we had remaining we decided to move on with a model that evaluates the win probability after the first, second, and third quarters."),
+                p("We have a few ideas to improve on our model in the future. 
+                would like to be able to incorporate stronger priors into our model. 
+                We talked about using win percentage and a combination of yardage statistics as simple, but informative priors. 
+                In the future we also would like to include home field advantage into our plot. 
+                Home teams have historically won around 56% of the time in the NFL. This would be another informative prior.")))
+    
+        ))
     
 server <- function(input, output) {
     output$binary_prediction <- renderTable(posterior_predict(model3rd, newdata = data.frame(score_differential.x = input$score_differential.x,
@@ -168,19 +178,19 @@ server <- function(input, output) {
                                                                                                       score_differential.x.x = input$score_differential.x.x,
                                                                                                       spread_line.x = -(input$spread_line_3))) %>%
                                                          as.data.frame(.) %>%
-                                                         summarise(Prob = mean(`1`)))
+                                                         summarise(Probability = mean(`1`)))
     output$pregame_prediction <- renderTable(posterior_predict(modelpre, newdata = data.frame(spread_line.x = -(input$spread_line_pre))) %>%
                                                  as.data.frame(.) %>%
-                                                 summarise(Prob = mean(`1`)))
+                                                 summarise(Probability = mean(`1`)))
     output$firstquarter_prediction <- renderTable(posterior_predict(model1st, newdata = data.frame(spread_line.x = -(input$spread_line_1),
                                                                                                    score_differential.x = input$scoredif1.1st)) %>%
                                                       as.data.frame(.) %>%
-                                                      summarise(Prob = mean(`1`)))
+                                                      summarise(Probability = mean(`1`)))
     output$secondquarter_prediction <- renderTable(posterior_predict(model2nd, newdata = data.frame(spread_line.x = -(input$spread_line_2),
                                                                                                    score_differential.x = input$scoredif1.2nd,
                                                                                                    score_differential.y = input$scoredif2.2nd)) %>%
                                                       as.data.frame(.) %>%
-                                                      summarise(Prob = mean(`1`)))
+                                                      summarise(Probability = mean(`1`)))
     output$dataoutput <- renderPlot(ggplot(data = data.frame(Preds = c(input$n1, input$n2, input$n3, input$n4), names = c('Pregame', 'Quarter 1', 'Quarter 2', 'Quarter 3'), game = c('game', 'game', 'game', 'game')), aes(x = names, y = Preds, group = game)) + 
                                         geom_line() + 
                                         geom_point() + 
