@@ -23,10 +23,10 @@ ui <- dashboardPage(
             menuItem("Welcome Page" , tabName = "dashboard"),
             menuItem("Motivation and Background", tabName = "background"),
             menuItem("Start of Game", tabName = "StartofGame"),
-            menuItem('FirstQuarter', tabName = 'FirstQuarter'),
-            menuItem('SecondQuarter', tabName = 'SecondQuarter'),
-            menuItem('ThirdQuarter', tabName = 'ThirdQuarter'),
-            menuItem('plot', tabName = 'plot'), 
+            menuItem('First Quarter', tabName = 'FirstQuarter'),
+            menuItem('Second Quarter', tabName = 'SecondQuarter'),
+            menuItem('Third Quarter', tabName = 'ThirdQuarter'),
+            menuItem('Plot', tabName = 'Plot'), 
             menuItem("Modeling Methodology", tabName = "methodology"))),
     dashboardBody(
         tabItems(
@@ -117,7 +117,7 @@ ui <- dashboardPage(
                                 value = 0)),
             
             # Sixith tab content
-            tabItem(tabName = "plot",
+            tabItem(tabName = "Plot",
                     box(title = 'Prediction After Third Quarter'),
                     box(plotOutput('dataoutput')),
                     sliderInput(inputId = "n1",
