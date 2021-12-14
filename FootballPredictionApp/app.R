@@ -176,7 +176,7 @@ server <- function(input, output) {
                                                                                                    score_differential.x = input$scoredif1.1st)) %>%
                                                       as.data.frame(.) %>%
                                                       summarise(Prob = mean(`1`)))
-    output$secondquarter_prediction <- renderTable(posterior_predict(model1st, newdata = data.frame(spread_line.x = -(input$spread_line_2),
+    output$secondquarter_prediction <- renderTable(posterior_predict(model2nd, newdata = data.frame(spread_line.x = -(input$spread_line_2),
                                                                                                    score_differential.x = input$scoredif1.2nd,
                                                                                                    score_differential.y = input$scoredif2.2nd)) %>%
                                                       as.data.frame(.) %>%
