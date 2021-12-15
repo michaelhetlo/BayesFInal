@@ -37,7 +37,8 @@ ui <- dashboardPage(
             tabItem(tabName = "dashboard",
                     box(title = 'NFL Win Probability Calculator',
                         p("By: Michael Helton, Jacob Bulling and Ty Bruckner")
-                        )), 
+                        ),
+                    img(src = 'justin-fields.png', align = 'center')), 
             # Second tab content
             tabItem(tabName = "background", 
                     box(title = "Motivation and Background"), 
@@ -52,6 +53,7 @@ ui <- dashboardPage(
             # Third tab content
             tabItem(tabName = "StartofGame",
                     box(title = 'Prediction Start of Game'),
+                    box(tableOutput('pregame_prediction')),
                     sliderInput(inputId = "spread_line_pre",
                                 label = "Home Team Spread",
                                 min = -21,
@@ -117,29 +119,28 @@ ui <- dashboardPage(
             
             # Sixith tab content
             tabItem(tabName = "Plot",
-                    box(title = 'Prediction After Third Quarter'),
-                    box(plotOutput('dataoutput')),
-                    tableOutput('tableoutput'),
+                    box(title = 'Prediction After Third Quarter',
                     sliderInput(inputId = "n1",
-                                label = "Pregame Spread",
-                                min = -30,
-                                max = 30,
-                                value = 0),
-                    sliderInput(inputId = "n2",
-                                label = "Quarter 1 Score Differential",
-                                min = -30,
-                                max = 30,
-                                value = 0),
-                    sliderInput(inputId = "n3",
-                                label = "Quarter 2 Score Differential",
-                                min = -30,
-                                max = 30,
-                                value = 0),
-                    sliderInput(inputId = "n4",
-                                label = "Quarter 3 Score Differential",
-                                min = -30,
-                                max = 30,
-                                value = 0)), 
+                                    label = "Pregame Spread",
+                                    min = -30,
+                                    max = 30,
+                                    value = 0),
+                        sliderInput(inputId = "n2",
+                                    label = "Quarter 1 Score Differential",
+                                    min = -30,
+                                    max = 30,
+                                    value = 0),
+                        sliderInput(inputId = "n3",
+                                    label = "Quarter 2 Score Differential",
+                                    min = -30,
+                                    max = 30,
+                                    value = 0),
+                        sliderInput(inputId = "n4",
+                                    label = "Quarter 3 Score Differential",
+                                    min = -30,
+                                    max = 30,
+                                    value = 0)),
+                    box(plotOutput('dataoutput'))), 
             
             # Seventh tab content
             tabItem(tabName = "methodology",
@@ -183,7 +184,8 @@ ui <- dashboardPage(
                   We then shifted our focus into creating a win probability model after each scoring play, which for some reason while we ran that model it was far overfit to the data and when applied to outside data on our predictions it did not work at all, given the time we had remaining we decided to move on with a model that evaluates the win probability after the first, second, and third quarters."),
                 p("We have a few ideas to improve on our model in the future. 
                 would like to be able to incorporate stronger priors into our model. 
-                We talked about using win percentage and a combination of yardage statistics as simple, but informative priors. 
+                We talked about using win percentage and a combination of yardage statistics as simple, but informative priors.  We did infact build out a model that encorporated team, record, week, game average pass yards for and against, and game average rushing yards for and against.  The model did show strong predicitive qualities, however we ran into issues of implementation with our in game models and issues of how to use user input for these models.
+                We also ran into issues of the power of our machines.  Some of these models with grouping variables such as team or game could take anywhere from 30 minutes to an hour and a half to run due to how large the data sets were.  This possed problems with possible app implementation as well as the model building process. 
                 In the future we also would like to include home field advantage into our plot. 
                 Home teams have historically won around 56% of the time in the NFL. This would be another informative prior.")))
     
@@ -265,9 +267,12 @@ server <- function(input, output) {
                   preds_2, 
                   preds_3)
         ggplot(data = plotdata, aes(x = names, y = preds, group = game)) + 
-                                        geom_line() + 
-                                        geom_point() + 
-                                        ylim(0, 1)
+                                        geom_line(color = 'blue', size = 2) + 
+                                        geom_point(color = 'orange', size = 4) + 
+                                        ylim(0, 1) + 
+                                        xlab('Time of Game') +
+                                        ylab('Home Team Win Probability') +
+                                        ggtitle('Win Probability for Each Point in a Game')
         })
 }
 # Run the application
