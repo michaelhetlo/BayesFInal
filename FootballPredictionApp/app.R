@@ -169,7 +169,9 @@ ui <- dashboardPage(
                     p("Accuracy - 85%"),
                     p("End of 3rd quarter probability when the score is tied between teams with 0 spread -𝛃0 - The logged odds of winning when the game is a pick’em and the score is tied after the 3rd quarter. 𝛃0  = -.35 which equates to an odds of .70. The odds of winning are less than 1 due to the fact that our outcome accounts for regulations wins."),
                     p("Vegas Spreadline Variable -𝛃1 - The increase in logged odds when the spread increases by 1. 𝛃1  = .11 . Every 1 point increase in the spread line increases our odds of winning by 11 percent."),
-                    p("3rd Quarter Score Differential - 𝛃2 - The increase in logged odds when the score differential increases by 1 at the end of the 3rd quarter. 𝛃2  = .21. Every 1 point increase in score differential at the end of the third quarter increases our odds of winning by 23 percent.")),
+                    p("3rd Quarter Score Differential - 𝛃2 - The increase in logged odds when the score differential increases by 1 at the end of the 3rd quarter. 𝛃2  = .21. Every 1 point increase in score differential at the end of the third quarter increases our odds of winning by 23 percent."),
+                    p("Thoughout our 4 models the accuracy increased. This makes sense because each model has information that occurs later in the game, so they should be more accurate."),
+                    p("Each quarter the score differential exponentiated coefficient - the number that the odds increase by - is larger than previous models. For example the score differential in the 3rd quarter is more informative than the second quarter.")),
         
         # Eighth tab content
         tabItem(tabName = "nextst",
