@@ -58,7 +58,42 @@ predictions %>%
 ```
 
 
+```{r}
+df_p <- data.frame(preds = seq(-21, 21, by = 1))
+df_p <- df_p %>%
+  mutate(names = 'Pregame',
+         game = 'game')
 
+df_1 <- data.frame(preds = seq(-30, 30, by = 1))
+df_1 <- df_1 %>%
+  mutate(names = 'Quarter 1',
+         game = 'game')
+
+df_2 <- data.frame(preds = seq(-30, 30, by = 1))
+df_2 <- df_2 %>%
+  mutate(names = 'Quarter 2',
+         game = 'game')
+
+df_3 <- data.frame(preds = seq(-30, 30, by = 1))
+df_3 <- df_3 %>%
+  mutate(names = 'Quarter 3',
+         game = 'game')
+
+df <- df_p %>%
+  rbind(df_1, df_2, df_3)
+```
+
+```{r}
+write.csv(df, file = 'df.csv')
+```
+
+```{r}
+df %>%
+  filter(preds_pre == .01, 
+         preds_1 == .02,
+         preds_2 == .03,
+         preds_3 == .04)
+```
 
 
 

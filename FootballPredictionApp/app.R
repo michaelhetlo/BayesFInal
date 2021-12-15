@@ -10,11 +10,13 @@ library(lubridate)
 library(nflfastR)
 library(shinydashboard)
 library(ggplot2)
+library(data.table)
 
 modelpre <- readRDS('pregame_model.rds')
 model1st <- readRDS('first_quarter.rds')
 model2nd <- readRDS('second_quarter.rds')
 model3rd <- readRDS("third_quarter.rds")
+df <- read_csv('df.csv')
 
 ui <- dashboardPage(
     dashboardHeader(title = "Win Probability Predictions"),
@@ -50,7 +52,6 @@ ui <- dashboardPage(
             # Third tab content
             tabItem(tabName = "StartofGame",
                     box(title = 'Prediction Start of Game'),
-                    box(tableOutput('pregame_prediction')),
                     sliderInput(inputId = "spread_line_pre",
                                 label = "Home Team Spread",
                                 min = -21,
@@ -118,25 +119,26 @@ ui <- dashboardPage(
             tabItem(tabName = "Plot",
                     box(title = 'Prediction After Third Quarter'),
                     box(plotOutput('dataoutput')),
+                    tableOutput('tableoutput'),
                     sliderInput(inputId = "n1",
                                 label = "Pregame Probability",
-                                min = 0,
-                                max = 1,
+                                min = -30,
+                                max = 30,
                                 value = 0),
                     sliderInput(inputId = "n2",
                                 label = "Quarter 1 Probability",
-                                min = 0,
-                                max = 1,
+                                min = -30,
+                                max = 30,
                                 value = 0),
                     sliderInput(inputId = "n3",
                                 label = "Quarter 2 Probability",
-                                min = 0,
-                                max = 1,
+                                min = -30,
+                                max = 30,
                                 value = 0),
                     sliderInput(inputId = "n4",
                                 label = "Quarter 3 Probability",
-                                min = 0,
-                                max = 1,
+                                min = -30,
+                                max = 30,
                                 value = 0)), 
             
             # Seventh tab content
@@ -206,10 +208,67 @@ server <- function(input, output) {
                                                                                                    score_differential.y = input$scoredif2.2nd)) %>%
                                                       as.data.frame(.) %>%
                                                       summarise(Probability = mean(`1`)))
-    output$dataoutput <- renderPlot(ggplot(data = data.frame(Preds = c(input$n1, input$n2, input$n3, input$n4), names = c('Pregame', 'Quarter 1', 'Quarter 2', 'Quarter 3'), game = c('game', 'game', 'game', 'game')), aes(x = names, y = Preds, group = game)) + 
+    # reactive_df_p <- reactive(
+    #     df %>% 
+    #         filter(names == 'Pregame',
+    #                preds == input$n1))
+    # reactive_df_1 <- reactive(
+    #     df %>%
+    #         filter(names == 'Quarter 1',
+    #                preds == input$n2))
+    # reactive_df_2 <- reactive(
+    #     df %>%
+    #         filter(names == 'Quarter 2',
+    #                preds == input$n3))
+    # reactive_df_3 <- reactive(
+    #     df %>%
+    #         filter(names == 'Quarter 3',
+    #                preds == input$n4))
+    # reactive_df <- reactive(
+    #     reactive_df_p %>%
+    #         rbindlist(reactive_df_1,
+    #               reactive_df_2,
+    #               reactive_df_3)
+    # )
+    reactive_df <- reactive(df)
+    
+    output$dataoutput <- renderPlot({
+        newdf <- reactive_df()
+        preds_p <- posterior_predict(modelpre, newdata = data.frame(spread_line.x = -(input$n1))) %>%
+            as.data.frame(.) %>%
+            summarise(preds = mean(`1`)) %>%
+            mutate(names = 'Pregame',
+                   game = 'game')
+        preds_1 <- posterior_predict(model1st, newdata = data.frame(spread_line.x = -(input$n1),
+                                                                     score_differential.x = input$n2)) %>%
+                        as.data.frame(.) %>%
+                        summarise(preds = mean(`1`)) %>%
+                        mutate(names = 'Quarter 1',
+                               game = 'game')
+        preds_2 <- posterior_predict(model2nd, newdata = data.frame(spread_line.x = -(input$n1),
+                                                                    score_differential.x = input$n2,
+                                                                    score_differential.y = input$n3)) %>%
+            as.data.frame(.) %>%
+            summarise(preds = mean(`1`)) %>%
+            mutate(names = 'Quarter 2',
+                   game = 'game')
+        preds_3 <- posterior_predict(model3rd, newdata = data.frame(score_differential.x = input$n2,
+                                                                    score_differential.y = input$n3,
+                                                                    score_differential.x.x = input$n4,
+                                                                    spread_line.x = -(input$n1))) %>%
+            as.data.frame(.) %>%
+            summarise(preds = mean(`1`)) %>%
+            mutate(names = 'Quarter 3',
+                   game = 'game')
+        plotdata <- preds_p %>%
+            rbind(preds_1, 
+                  preds_2, 
+                  preds_3)
+        ggplot(data = plotdata, aes(x = names, y = preds, group = game)) + 
                                         geom_line() + 
                                         geom_point() + 
-                                        ylim(0, 1))
+                                        ylim(0, 1)
+        })
 }
 # Run the application
 shinyApp(ui = ui, server = server)
