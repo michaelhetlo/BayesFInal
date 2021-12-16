@@ -3,14 +3,14 @@ title: "Model Code"
 output: html_document
 ---
 
-```{r setup, warning=FALSE, message=FALSE}
+```{r setup, warning=FALSE, message=FALSE,echo=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## R Markdown
 
 
-```{r,message=FALSE, warning=FALSE}
+```{r,message=FALSE, warning=FALSE,echo=TRUE}
 # Load packages
 library(bayesrules)
 library(tidyverse)
@@ -62,12 +62,12 @@ https://www.nflfastr.com/articles/field_descriptions.html
 
 
 ```{r, include = FALSE}
-# knitr::opts_chunk$set(
-#   echo = FALSE,
-#   comment = "#>"
-# )
-# 
-# with_dt <- requireNamespace("DT")
+knitr::opts_chunk$set(
+  echo = FALSE,
+  comment = "#>"
+)
+
+with_dt <- requireNamespace("DT")
 
 ```
 
@@ -151,12 +151,12 @@ teamstandings20 <- homewins20 %>%
 
 Below we have the the amount of wins for each team in the 2020 season, using this prior knowledgue of team quality will help to inform us of future game win probability. 
 
-```{r}
+```{r,echo=TRUE}
 data_new <- load_pbp(2020)
 ```
 
 
-```{r}
+```{r,echo=TRUE}
 halftime_score_diff_2020 <- data_new %>%
   filter(half_seconds_remaining == 0 & game_half == "Half1" & season_type == "REG")%>%
   mutate(score_differential = total_home_score - total_away_score)%>%
@@ -164,7 +164,7 @@ halftime_score_diff_2020 <- data_new %>%
 ```
 
 
-```{r}
+```{r,echo=TRUE}
 end_score_diff_2020 <- data_new %>%
   filter(half_seconds_remaining == 0 & game_half == "Half2" & season_type == "REG")%>%
   mutate(score_differential = total_home_score- total_away_score)%>%
@@ -203,7 +203,7 @@ quarter_score_diff <- first_q_diff %>%
 
 ```
 
-```{r}
+```{r,echo=TRUE}
 teamstandings20 <- teamstandings20 %>%
   left_join(teams_colors_logos, by = c("team" = "team_abbr"))
   
@@ -261,8 +261,6 @@ week_1 <- stan_glm(
 week_1
 ```
 
-The centered intercept tells us about the log odds of the winning probability. 
-
 ```{r}
 
 pp_check(week_1)
@@ -279,7 +277,7 @@ Our next steps are to finish creating our prior analysis on how good each team i
 ### This model uses the Vegas Spreadline when prior to the beginning of the game
 
 
-```{r}
+```{r,echo=TRUE}
 log_model_0 <- stan_glm(home_team_win ~ spread_line.x, 
                                       data = quarter_score_diff, 
                                       family = binomial,
@@ -290,14 +288,14 @@ log_model_0 <- stan_glm(home_team_win ~ spread_line.x,
 
 
 
-```{r}
+```{r,echo=TRUE}
 saveRDS(log_model_0,"pregame_model.rds")
 
 ```
 
 
 
-```{r}
+```{r,echo=TRUE}
 classification_summary(log_model_0,quarter_score_diff)
 ```
 
@@ -311,34 +309,32 @@ exp(mod_0$estimate)
 # Model 1
 ### This model uses the Vegas spreadline and the score differential after the 1st quarter.
 
-```{r}
+```{r,echo=TRUE}
 log_model_1 <- stan_glm(home_team_win ~ score_differential.x + spread_line.x, 
                                       data = quarter_score_diff, 
                                       family = binomial,
   chains = 4, iter = 5000*2, seed = 84735, refresh = 0)
 ```
 
-```{r}
+```{r,echo=TRUE}
 classification_summary(log_model_1, quarter_score_diff)
 ```
 
 
 
-```{r}
+```{r,echo=TRUE}
 classification_summary(log_model_1, quarter_score_diff)
 ```
 
-```{r}
+```{r,echo=TRUE}
 mod1<- tidy(log_model_1,conf.int = TRUE,conf.level = .95)
 mod1
 ```
-```{r}
+```{r,echo=TRUE}
 exp(mod1$estimate)
 ```
-A 1 point increase in score differential increases are odds of winning by 15 percent at the end of the first quarter.
 
-
-```{r}
+```{r,echo=TRUE}
 saveRDS(log_model_1,"first_quarter.rds")
 ```
 
@@ -346,7 +342,7 @@ saveRDS(log_model_1,"first_quarter.rds")
 # Model 2 
 ### This model uses the Vegas Spreadline and the halftime score differential.
 
-```{r}
+```{r,echo=TRUE}
 log_model_2 <- stan_glm(home_team_win ~  
                                        score_differential.y+ 
                                       spread_line.x, 
@@ -361,7 +357,7 @@ pp_check(log_model_2)
 ```
 
 
-```{r}
+```{r,echo=TRUE}
 classification_summary(log_model_2, quarter_score_diff)
 ```
 
@@ -369,18 +365,18 @@ classification_summary(log_model_2, quarter_score_diff)
 
 
 
-```{r}
+```{r,echo=TRUE}
 mod_2 <- tidy(log_model_2, conf.int = TRUE, conf.level = .95)
 mod_2
 ```
 
-```{r}
+```{r,echo=TRUE}
 exp(mod_2$estimate)
 ```
 
 
 
-```{r}
+```{r,echo=TRUE}
 saveRDS(log_model_2, "second_quarter.rds")
 ```
 
@@ -388,7 +384,7 @@ saveRDS(log_model_2, "second_quarter.rds")
 # Model 3
 ### This model uses Vegas Spreadline and Score Differential after the 3rd Quarter.
 
-```{r}
+```{r,echo=TRUE}
 log_model_3 <- stan_glm(home_team_win ~ score_differential.x.x + spread_line.x, 
                                       data = quarter_score_diff, 
                                       family = binomial,
@@ -397,21 +393,21 @@ log_model_3 <- stan_glm(home_team_win ~ score_differential.x.x + spread_line.x,
 
 
 
-```{r}
+```{r,echo=TRUE}
 classification_summary(log_model_3,quarter_score_diff,cutoff = .5)
 ```
 
-```{r}
+```{r,echo=TRUE}
 model_sum <- tidy(log_model_3, conf.int = TRUE, conf.level = .95)
 model_sum
 ```
 
-```{r}
+```{r,echo=TRUE}
 exp(model_sum$estimate)
 ```
 
 
-```{r}
+```{r,echo=TRUE}
 saveRDS(log_model_3, "third_quarter.rds")
 ```
 
