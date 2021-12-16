@@ -1,5 +1,5 @@
 ---
-title: "Project Checkpoint 4"
+title: "Model Code"
 output: html_document
 ---
 
@@ -62,12 +62,12 @@ https://www.nflfastr.com/articles/field_descriptions.html
 
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  echo = FALSE,
-  comment = "#>"
-)
-
-with_dt <- requireNamespace("DT")
+# knitr::opts_chunk$set(
+#   echo = FALSE,
+#   comment = "#>"
+# )
+# 
+# with_dt <- requireNamespace("DT")
 
 ```
 
@@ -147,7 +147,7 @@ teamstandings20 <- homewins20 %>%
 
 
 
-## Part 3
+## Data Cleaning and Exploration
 
 Below we have the the amount of wins for each team in the 2020 season, using this prior knowledgue of team quality will help to inform us of future game win probability. 
 
@@ -247,10 +247,9 @@ This is a win probability graph. This is ultimately what we would like to build 
 
 
 
-## Part 4
+## Basic Model
 
-OUr first model is a basic logistic regression model that predicts who will win the game based on the halftime score. This is a very basic model to get us started that will help us with the frame work as we build it into a more complex model. 
-
+Our first model is a basic logistic regression model that predicts who will win the game based on the end of first quarter score. 
 ```{r}
 week_1 <- stan_glm(
   home_team_win~ score_differential.x,
@@ -277,7 +276,7 @@ Our next steps are to finish creating our prior analysis on how good each team i
 
 
 # Model 0 
-## This model uses the Vegas Spreadline when prior to the beginning of the game
+### This model uses the Vegas Spreadline when prior to the beginning of the game
 
 
 ```{r}
@@ -310,7 +309,7 @@ exp(mod_0$estimate)
 
 
 # Model 1
-## This model uses the Vegas spreadline and the score differential after the 1st quarter.
+### This model uses the Vegas spreadline and the score differential after the 1st quarter.
 
 ```{r}
 log_model_1 <- stan_glm(home_team_win ~ score_differential.x + spread_line.x, 
@@ -345,7 +344,7 @@ saveRDS(log_model_1,"first_quarter.rds")
 
 
 # Model 2 
-## This model uses the Vegas Spreadline and the halftime score differential.
+### This model uses the Vegas Spreadline and the halftime score differential.
 
 ```{r}
 log_model_2 <- stan_glm(home_team_win ~  
@@ -380,7 +379,6 @@ exp(mod_2$estimate)
 ```
 
 
-A one point increase score differential increases odds of winning by 33 percent.
 
 ```{r}
 saveRDS(log_model_2, "second_quarter.rds")
@@ -388,7 +386,7 @@ saveRDS(log_model_2, "second_quarter.rds")
 
 
 # Model 3
-## This model uses Vegas Spreadline and Score Differential after the 3rd Quarter.
+### This model uses Vegas Spreadline and Score Differential after the 3rd Quarter.
 
 ```{r}
 log_model_3 <- stan_glm(home_team_win ~ score_differential.x.x + spread_line.x, 
@@ -411,10 +409,6 @@ model_sum
 ```{r}
 exp(model_sum$estimate)
 ```
-
-
-In our model, holding other variables constant, the odds of another point greater in score differential increase our odds of winning by 35%.
-
 
 
 ```{r}
